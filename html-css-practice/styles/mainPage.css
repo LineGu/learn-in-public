@@ -22,8 +22,8 @@
   font-size: 1.2em;
 }
 
-.line {
-  margin-bottom: 2em;
+.oneLine {
+  margin: 1em 0;
 }
 
 .blackBold {
