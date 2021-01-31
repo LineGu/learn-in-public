@@ -1,0 +1,31 @@
+#fullBox {
+  margin: 3% auto;
+  width: 50%;
+}
+
+#foodTitle {
+  color: #e56863;
+  margin: 0;
+  padding: 0;
+  vertical-align: bottom;
+  font-size: 3em;
+}
+
+#cakeImage {
+  margin: 6% 0;
+  width: 385px;
+  height: 518px;
+}
+
+.aboutCake {
+  color: #909090;
+  font-size: 1.2em;
+}
+
+.line {
+  margin-bottom: 2em;
+}
+
+.blackBold {
+  color: #000000;
+}
