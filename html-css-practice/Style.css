@@ -1,13 +1,9 @@
-#mainTitle {
-  position: relative;
-  height: 100px;
-  left: 15%;
+#fullBox {
+  width: 50%;
+  margin: 0 auto;
+  margin-top: 3%;
 }
-#helper {
-  display: inline-block;
-  height: 100%;
-  vertical-align: middle;
-}
+
 .grayTitle {
   color: gray;
   margin-bottom: 5px;
