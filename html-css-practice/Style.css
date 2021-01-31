@@ -1,0 +1,36 @@
+#mainTitle {
+  position: relative;
+  height: 100px;
+  left: 15%;
+}
+#helper {
+  display: inline-block;
+  height: 100%;
+  vertical-align: middle;
+}
+.grayTitle {
+  color: gray;
+  margin-bottom: 5px;
+}
+.blackBold {
+  font-weight: 700;
+}
+
+.oneLine {
+  margin-bottom: 15px;
+  font-size: 1.2em;
+}
+#food {
+  color: #e56863;
+  vertical-align: bottom;
+  font-size: 3em;
+  margin: 0;
+  padding: 0;
+}
+
+#cake {
+  margin-top: 40px;
+  margin-bottom: 40px;
+  width: 385px;
+  height: 518px;
+}
