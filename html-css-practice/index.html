@@ -5,32 +5,40 @@
     <meta charset="utf-8" />
     <link rel="stylesheet" href="styles/mainPage.css" />
   </head>
+
   <body id="fullBox">
     <div id="leftBox">
-      <div class="aboutCake">레시피</div>
-      <h1 id="foodTitle">
-        딸기 바닐라 <br />
-        팬케이크
-      </h1>
-      <img id="cakeImage" src="assets/cake.png" alt="딸기 팬케이크 사진입니다." />
-      <form class="aboutCake">
-        <p class="oneLine">조리 시간: <b class="blackBold">20분</b></p>
-        <p class="oneLine">분량: <b class="blackBold">8인분</b></p>
-        <p class="oneLine"><b class="blackBold">280칼로리</b></p>
-      </form>
+      <section>
+        <header class="aboutCake">레시피</header>
+        <h1 id="foodTitle">
+          딸기 바닐라 <br />
+          팬케이크
+        </h1>
+        <img id="cakeImage" src="assets/cake.png" alt="딸기 팬케이크 사진입니다." />
+      </section>
+
+      <section class="aboutCake">
+        <article>
+          <p class="oneLine">조리 시간: <b class="blackBold">20분</b></p>
+          <p class="oneLine">분량: <b class="blackBold">8인분</b></p>
+          <p class="oneLine"><b class="blackBold">280칼로리</b></p>
+        </article>
+      </section>
     </div>
+
     <div id="rightBox">
-      <div class="materialBox">
-        <div class="smallTitle">재료</div>
+      <section class="materialBox">
+        <h2 class="smallTitle">재료</h2>
         <ul class="materialBox__list">
           <li class="materialBox__list-item">여기에 텍스트를 입력하세요</li>
           <li class="materialBox__list-item">여기에 텍스트를 입력하세요</li>
           <li class="materialBox__list-item">여기에 텍스트를 입력하세요</li>
           <li class="materialBox__list-item">여기에 텍스트를 입력하세요</li>
         </ul>
-      </div>
-      <div class="processBox">
-        <div class="smallTitle">준비</div>
+      </section>
+
+      <section class="processBox">
+        <h2 class="smallTitle">준비</h2>
         <ol class="processBox__list">
           <li id="1">
             <strong class="blackBold">여기에 텍스트를 입력하세요 </strong>여기에 텍스트를 입력하세요
@@ -61,11 +69,14 @@
           <br />
           <li id="6">여기에 텍스트를 입력하세요 여기에 텍스트를 입력하세요</li>
         </ol>
-      </div>
-      <div class="tipBox">
-        <div class="smallTitle">팁</div>
-        <p>여기에 텍스트를 입력하세요 여기에 텍스트를 입력하세요 여기에 텍스트를 입력하세요.</p>
-      </div>
+      </section>
+
+      <section>
+        <article class="tipBox">
+          <h2 class="smallTitle">팁</h2>
+          <p>여기에 텍스트를 입력하세요 여기에 텍스트를 입력하세요 여기에 텍스트를 입력하세요.</p>
+        </article>
+      </section>
     </div>
   </body>
 </html>
