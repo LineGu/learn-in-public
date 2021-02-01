@@ -1,0 +1,60 @@
+#fullBox {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 3% auto;
+  width: 41%;
+}
+
+#rightBox {
+  display: flex;
+  flex-direction: column;
+  color: #909090;
+  padding-top: 18%;
+  margin-left: 7%;
+}
+
+#foodTitle {
+  color: #e56863;
+  margin: 0;
+  padding: 0;
+  vertical-align: bottom;
+  font-size: 3em;
+}
+
+#cakeImage {
+  margin: 6% 0;
+  width: 385px;
+  height: 518px;
+}
+
+.aboutCake {
+  color: #909090;
+  font-size: 1em;
+}
+
+.oneLine {
+  margin: 1em 0;
+}
+
+.blackBold {
+  color: #000000;
+}
+
+.smallTitle {
+  color: #e56863;
+  font-size: 1.6em;
+  font-weight: 700;
+  margin: 0;
+  padding: 0;
+}
+
+.processBox__list,
+.materialBox__list {
+  margin: 5% 0 20% 5%;
+  padding: 0;
+  font-size: 1em;
+}
+.materialBox__list-item {
+  margin: 0 0 1em 1%;
+}

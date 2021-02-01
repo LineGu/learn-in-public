@@ -3,27 +3,69 @@
   <head>
     <title>제목1</title>
     <meta charset="utf-8" />
+    <link rel="stylesheet" href="styles/mainPage.css" />
   </head>
-  <body>
-    <p>레시피</p>
-    <h1>
-      딸리 바닐라 <br />
-      팬케이크
-    </h1>
-    <div>
-      <img
-        src="https://www.gravatar.com/avatar/edc1de56da658ae0b919a2d2ee28e26c?s=32&d=retro"
-        alt="ZeroCho"
-        usemap="#zero"
-      />
-      <map name="zero" id="zero">
-        <area href="./home" alt="홈" shape="rect" coords="15,15,17,17" />
-        <area href="./profile" alt="프로필" shape="circle" coords="16,16,5" />
-      </map>
-      <label for="userid">아이디</label>
-      <input type="text" placeholder="아이디 입력" id="userid" name="userid" />
-      <p>Welcome to HTML world! 저와 함께 html을 배워봅시다.</p>
-      <img src="http://www.gravatar.com/avatar/edc1de56da658ae0b919a2d2ee28e26c?s=32&d=retro" />
+  <body id="fullBox">
+    <div id="leftBox">
+      <div class="aboutCake">레시피</div>
+      <h1 id="foodTitle">
+        딸기 바닐라 <br />
+        팬케이크
+      </h1>
+      <img id="cakeImage" src="assets/cake.png" alt="딸기 팬케이크 사진입니다." />
+      <form class="aboutCake">
+        <p class="oneLine">조리 시간: <b class="blackBold">20분</b></p>
+        <p class="oneLine">분량: <b class="blackBold">8인분</b></p>
+        <p class="oneLine"><b class="blackBold">280칼로리</b></p>
+      </form>
+    </div>
+    <div id="rightBox">
+      <div class="materialBox">
+        <div class="smallTitle">재료</div>
+        <ul class="materialBox__list">
+          <li class="materialBox__list-item">여기에 텍스트를 입력하세요</li>
+          <li class="materialBox__list-item">여기에 텍스트를 입력하세요</li>
+          <li class="materialBox__list-item">여기에 텍스트를 입력하세요</li>
+          <li class="materialBox__list-item">여기에 텍스트를 입력하세요</li>
+        </ul>
+      </div>
+      <div class="processBox">
+        <div class="smallTitle">준비</div>
+        <ol class="processBox__list">
+          <li id="1">
+            <strong class="blackBold">여기에 텍스트를 입력하세요 </strong>여기에 텍스트를 입력하세요
+            여기에 텍스트를 입력하세요<br />
+            여기에 텍스트를 입력하세요 여기에 텍스트를 입력하세요.
+          </li>
+          <br />
+          <li id="2">
+            여기에 텍스트를 입력하세요 여기에 텍스트를 입력하세요 여기에 텍스트를 입력하세요<br />
+            여기에 텍스트를 입력하세요.
+          </li>
+          <br />
+          <li id="3">
+            <strong class="blackBold">여기에 텍스트를 입력하세요 </strong>여기에 텍스트를 입력하세요
+            여기에 텍스트를 입력하세요<br />
+            여기에 텍스트를 입력하세요 여기에 텍스트를 입력하세요.
+          </li>
+          <br />
+          <li id="4">
+            <strong class="blackBold">여기에 텍스트를 입력하세요 </strong>여기에 텍스트를 입력하세요
+            여기에 텍스트를 입력하세요 여기에 텍스트를 입력하세요.
+          </li>
+          <br />
+          <li id="5">
+            여기에 텍스트를 입력하세요 여기에 텍스트를 입력하세요 여기에 텍스트를 입력하세요<br />
+            여기에 텍스트를 입력하세요 여기에 텍스트를 입력하세요.
+          </li>
+          <br />
+          <li id="6">여기에 텍스트를 입력하세요 여기에 텍스트를 입력하세요</li>
+        </ol>
+      </div>
+      <div class="tipBox">
+        <div class="smallTitle">팁</div>
+        <p>여기에 텍스트를 입력하세요 여기에 텍스트를 입력하세요 여기에 텍스트를 입력하세요.</p>
+      </div>
     </div>
   </body>
 </html>
