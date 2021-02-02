@@ -1,0 +1,49 @@
+.TotalImageBox {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.TotalImageBox > div > button {
+  border: 0;
+  background-color: white;
+  outline: none;
+}
+
+.Arrow {
+  width: 2em;
+  length: 2em;
+  opacity: 0.5;
+  background-color: white;
+  border-color: none;
+}
+
+.tapButton {
+  display: flex;
+  justify-content: center;
+}
+
+input[type='radio'],
+input[type='radio']:checked {
+  appearance: none;
+  width: 0.9rem;
+  height: 0.9rem;
+  border-radius: 100%;
+  margin-right: 0.1em;
+  outline: none;
+}
+
+input[type='radio'] {
+  background-color: white;
+  border: 2px solid;
+}
+input[type='radio']:checked {
+  background-color: black;
+}
+
+input:focus::-webkit-input-placeholder,
+textarea:focus::-webkit-input-placeholder {
+  /* WebKit browsers */
+  color: transparent;
+}

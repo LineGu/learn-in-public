@@ -8,6 +8,7 @@
 #rightBox {
   display: flex;
   flex-direction: column;
+  justify-content: space-around;
   color: #909090;
   margin: 18% 0 0 7%;
 }
