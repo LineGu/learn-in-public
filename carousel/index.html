@@ -21,29 +21,28 @@
       </div>
     </seciton>
 
-    <section class="TotalImageBox">
-      <div>
-        <button type="button" id="leftButton">
-          <img class="Arrow" src="assets/leftArrow.png" alt="왼쪽버튼" />
-        </button>
-      </div>
-
-      <div id="imageContainer">
-        <div class="1">
-          <img class="plus" src="./assets/basis.png" alt="사진을 불러올 수 없습니다." />
+    <section class="BigContainer">
+      <section class="TotalImageBox">
+        <div class="ArrowButton">
+          <button type="button" id="leftButton"></button>
         </div>
-      </div>
 
-      <div>
-        <button type="button" id="rightButton">
-          <img class="Arrow" src="assets/rightArrow.png" alt="오른쪽버튼" />
-        </button>
+        <div id="imageContainer">
+          <div class="1">
+            <img class="plus" src="./assets/basis.png" alt="사진을 불러올 수 없습니다." />
+            <strong>1</strong>
+          </div>
+        </div>
+
+        <div class="ArrowButton">
+          <button type="button" id="rightButton"></button>
+        </div>
+      </section>
+
+      <div class="tapButton">
+        <input type="radio" name="page" value="1" />
       </div>
     </section>
-
-    <div class="tapButton">
-      <input type="radio" name="page" value="1" />
-    </div>
 
     <script src="index.js"></script>
   </body>
