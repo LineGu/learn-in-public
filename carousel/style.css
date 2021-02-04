@@ -1,23 +1,69 @@
-.TotalImageBox {
+body {
+  vertical-align: center;
+  text-align: center;
+}
+
+.BigContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-self: center;
+}
+
+.ArrowAndImgBox {
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  overflow: auto;
 }
 
-.TotalImageBox > div > button {
-  border: 0;
-  background-color: white;
+#sliderContent {
+  display: flex;
+  flex-wrap: nowrap;
+
+  justify-content: start;
+  width: 200px;
+  margin: 10px;
+  padding: 15px;
+  border-radius: 5px;
+  background: #60b99a;
+  overflow: auto;
+}
+
+#sliderContent > div {
+  margin-right: 20px;
+}
+
+/*------------버튼------------------*/
+
+.ArrowAndImgBox > button {
+  border: none;
+  width: 2em;
+  height: 2em;
+  cursor: pointer;
+  opacity: 0.2;
   outline: none;
 }
 
-.Arrow {
-  width: 2em;
-  length: 2em;
-  opacity: 0.5;
-  background-color: white;
-  border-color: none;
+.ArrowAndImgBox > button:hover {
+  opacity: 0.6;
 }
+
+.ArrowAndImgBox > button:active {
+  opacity: 1;
+}
+
+button#leftButton {
+  background: url('./assets/leftArrow.png') no-repeat;
+  background-size: 2em;
+}
+button#rightButton {
+  background: url('./assets/rightArrow.png') no-repeat;
+  background-size: 2em;
+}
+
+/*------------래디오 버튼------------------*/
 
 .tapButton {
   display: flex;
@@ -37,13 +83,12 @@ input[type='radio']:checked {
 input[type='radio'] {
   background-color: white;
   border: 2px solid;
+  opacity: 0.5;
+}
+input[type='radio']:hover {
+  opacity: 1;
 }
 input[type='radio']:checked {
   background-color: black;
-}
-
-input:focus::-webkit-input-placeholder,
-textarea:focus::-webkit-input-placeholder {
-  /* WebKit browsers */
-  color: transparent;
+  opacity: 1;
 }
