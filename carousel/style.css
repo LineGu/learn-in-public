@@ -10,7 +10,7 @@ body {
   justify-self: center;
 }
 
-.TotalImageBox {
+.ArrowAndImgBox {
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -18,7 +18,7 @@ body {
   overflow: auto;
 }
 
-#imageContainer {
+#sliderContent {
   display: flex;
   flex-wrap: nowrap;
 
@@ -31,13 +31,13 @@ body {
   overflow: auto;
 }
 
-#imageContainer > div {
+#sliderContent > div {
   margin-right: 20px;
 }
 
 /*------------버튼------------------*/
 
-.TotalImageBox > div > button {
+.ArrowAndImgBox > button {
   border: none;
   width: 2em;
   height: 2em;
@@ -46,11 +46,11 @@ body {
   outline: none;
 }
 
-.TotalImageBox > div > button:hover {
+.ArrowAndImgBox > button:hover {
   opacity: 0.6;
 }
 
-.TotalImageBox > div > button:active {
+.ArrowAndImgBox > button:active {
   opacity: 1;
 }
 
