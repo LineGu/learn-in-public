@@ -31,8 +31,11 @@ body {
 }
 
 #sliderContent > div {
+<<<<<<< HEAD
   height: 230px;
   width: 300px;
+=======
+>>>>>>> d48e41b ([Repactory] Repactory html class name and index.js)
   margin-right: 20px;
 }
 
