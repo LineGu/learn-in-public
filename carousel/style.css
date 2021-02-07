@@ -10,18 +10,16 @@ body {
   justify-self: center;
 }
 
-.TotalImageBox {
+.ArrowAndImgBox {
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  overflow: auto;
 }
 
-#imageContainer {
+#sliderContent {
   display: flex;
   flex-wrap: nowrap;
-
   justify-content: start;
   width: 200px;
   margin: 10px;
@@ -29,15 +27,18 @@ body {
   border-radius: 5px;
   background: #60b99a;
   overflow: auto;
+  position: relative;
 }
 
-#imageContainer > div {
+#sliderContent > div {
+  height: 230px;
+  width: 300px;
   margin-right: 20px;
 }
 
 /*------------버튼------------------*/
 
-.TotalImageBox > div > button {
+.ArrowAndImgBox > button {
   border: none;
   width: 2em;
   height: 2em;
@@ -46,11 +47,11 @@ body {
   outline: none;
 }
 
-.TotalImageBox > div > button:hover {
+.ArrowAndImgBox > button:hover {
   opacity: 0.6;
 }
 
-.TotalImageBox > div > button:active {
+.ArrowAndImgBox > button:active {
   opacity: 1;
 }
 

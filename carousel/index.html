@@ -9,37 +9,27 @@
 
   <body>
     <seciton>
-      <input
-        type="number"
-        placeholder="몇개의 사진을 추가할까요?"
-        id="numberToChange"
-        name="numberToChange"
-      />
+      <input type="number" placeholder="몇개의 사진을 추가할까요?" id="numberToAdd" />
       <div class="button">
         <button id="add">추가</button>
-        <button id="sub">초기화</button>
       </div>
     </seciton>
 
     <section class="BigContainer">
-      <section class="TotalImageBox">
-        <div class="ArrowButton">
-          <button type="button" id="leftButton"></button>
-        </div>
+      <section class="ArrowAndImgBox">
+        <button type="button" id="leftButton"></button>
 
-        <div id="imageContainer">
+        <div id="sliderContent">
           <div class="1">
             <img class="plus" src="./assets/basis.png" alt="사진을 불러올 수 없습니다." />
             <strong>1</strong>
           </div>
         </div>
 
-        <div class="ArrowButton">
-          <button type="button" id="rightButton"></button>
-        </div>
+        <button type="button" id="rightButton"></button>
       </section>
 
-      <div class="tapButton">
+      <div class="tabButtonBox">
         <input type="radio" name="page" value="1" />
       </div>
     </section>

@@ -1,77 +1,104 @@
-const inputValue = document.getElementById('numberToChange')
-const addNumber = document.getElementById('add')
-const subNumber = document.getElementById('sub')
-const imageContainer = document.getElementById('imageContainer')
+const numberToAddElem = document.querySelector('#numberToAdd');
+const addButtonElem = document.querySelector('#add');
+const imageContainerElem = document.querySelector('#sliderContent');
+const tabButtonElem = document.querySelector('.tabButtonBox');
+const arrowBoxElem = document.querySelector('.ArrowAndImgBox');
 
-const rightButton = document.querySelector('#rightButton')
-const leftButton = document.querySelector('#leftButton')
-const tapButton = document.querySelector('.tapButton')
-let tapButtonList = tapButton.querySelectorAll('input')
+const ArrowButton = {
+  left: 'leftButton',
+  right: 'rightButton',
+};
 
-addNumber.addEventListener('click', function (plusImgTapButton) {
-  let numberToAdd = inputValue.value
-  let currentAllImg = imageContainer.childElementCount
-  let currentFirstImg = imageContainer.firstElementChild.getAttribute('class')
-  inputValue.value = ''
+const createImgElem = (number) =>
+  `<div class="${number}"><img class="plus" src="./assets/basis.png" alt="사진을 불러올 수 없습니다." /><strong>${number}</strong></div>`;
 
-  for (let i = 0; i < numberToAdd; i++) {
-    let lastImg = imageContainer.querySelectorAll('div')[currentAllImg - currentFirstImg + i]
-    /* 만약 현재 내가 보고있는 위치가 애매한 3번이나 이런곳일 때, 넣어지는 순서가 꼬이지 않도록 넣어줌
-     */ lastImg.insertAdjacentHTML(
-      'afterend',
-      `<div class="` +
-        `${i + 1 + currentAllImg}` +
-        `"><img class="plus" src="./assets/basis.png" alt="사진을 불러올 수 없습니다." /><strong>` +
-        `${i + 1 + currentAllImg}` +
-        `</strong></div>`,
-    )
+const createTabElem = (number) => `<input type="radio" name="page" value="${number}" />`;
 
-    tapButton.insertAdjacentHTML(
-      'beforeend',
-      `<input type="radio" name="page" value="` + `${i + 1 + currentAllImg}` + `" />`,
-    )
+const resetInputValue = (elem) => (elem.value = '');
+
+const checkTabButton = (imgNumberToCheck) => {
+  const tabButtonElemList = tabButtonElem.querySelectorAll('input');
+  const indexToCheck = imgNumberToCheck - 1;
+  tabButtonElemList[indexToCheck].checked = true;
+};
+
+const initialCheckTabButton = () => {
+  checkTabButton(1);
+};
+
+const plusImgItem = () => {
+  const numberToAdd = numberToAddElem.value;
+  const totalImgCount = imageContainerElem.childElementCount;
+  const firstIndexImg = imageContainerElem.firstElementChild.classList[0];
+  const lastImgIndex = totalImgCount - firstIndexImg;
+  const lastImg = imageContainerElem.querySelectorAll('div')[lastImgIndex];
+  const lastTabButton = tabButtonElem.lastElementChild;
+  let remainingCountToAdd = Number(numberToAdd);
+
+  resetInputValue(numberToAddElem);
+
+  while (remainingCountToAdd) {
+    const PageNumberToAdd = totalImgCount + remainingCountToAdd;
+
+    lastImg.insertAdjacentHTML('afterend', createImgElem(PageNumberToAdd));
+    lastTabButton.insertAdjacentHTML('afterend', createTabElem(PageNumberToAdd));
+
+    remainingCountToAdd -= 1;
   }
-  let tapButtonList = tapButton.querySelectorAll('input')
-})
+};
 
-rightButton.addEventListener('click', function (rightMove) {
-  let first = imageContainer.firstElementChild
-  imageContainer.append(first) /* 왜 돼? 제일 앞 요소를 반화하면서 지우거나/ 뭐지?*/
-  let tapButtonList = tapButton.querySelectorAll('input')
-  for (let i = 0; i < 100; i++) {
-    if (imageContainer.firstElementChild.getAttribute('class') === tapButtonList[i].value) {
-      tapButtonList[i].checked = true
-      break
-    }
+const slideRightImg = (numberToSlide) => {
+  while (numberToSlide) {
+    const firstImgElem = imageContainerElem.firstElementChild;
+    imageContainerElem.append(firstImgElem);
+    numberToSlide -= 1;
   }
-})
+};
 
-leftButton.addEventListener('click', function (leftMove) {
-  let last = imageContainer.lastElementChild
-  imageContainer.prepend(last) /* 왜 돼? 제일 앞 요소를 반화하면서 지우거나/ 뭐지?*/
-  let tapButtonList = tapButton.querySelectorAll('input')
-  for (let i = 0; i < 100; i++) {
-    if (imageContainer.firstElementChild.getAttribute('class') === tapButtonList[i].value) {
-      tapButtonList[i].checked = true
-      break
-    }
+const slideLeftImg = (numberToSlide) => {
+  while (numberToSlide) {
+    const lastImgElem = imageContainerElem.lastElementChild;
+    imageContainerElem.prepend(lastImgElem);
+    numberToSlide -= 1;
   }
-})
+};
 
-tapButton.addEventListener('click', function (tapClick) {
-  let targetTap = tapClick.target.value
-  for (let i = 0; i < imageContainer.childElementCount; i++) {
-    if (imageContainer.firstElementChild.getAttribute('class') === targetTap) {
-      break
-    }
-    let first = imageContainer.firstElementChild
-    imageContainer.append(first)
-  }
-})
+const moveByArrow = (event) => {
+  const directionToMove = event.target.id;
 
-for (let i = 0; i < 100; i++) {
-  if (imageContainer.firstElementChild.getAttribute('class') === tapButtonList[i].value) {
-    tapButtonList[i].checked = true
-    break
+  switch (directionToMove) {
+    case ArrowButton.right:
+      slideRightImg(1);
+      break;
+
+    case ArrowButton.left:
+      slideLeftImg(1);
+      break;
   }
-}
+
+  const firstImgNumber = imageContainerElem.firstElementChild.classList[0];
+  checkTabButton(firstImgNumber);
+};
+
+const moveByTab = (event) => {
+  const clickedTabButtonNumber = Number(event.target.value);
+  const firstIndexImg = Number(imageContainerElem.firstElementChild.classList[0]);
+  const isSlideToRight = firstIndexImg < clickedTabButtonNumber;
+
+  checkTabButton(clickedTabButtonNumber);
+
+  if (isSlideToRight) {
+    const numberToSlide = clickedTabButtonNumber - firstIndexImg;
+    console.log(numberToSlide);
+    slideRightImg(numberToSlide);
+  } else if (!isSlideToRight) {
+    const numberToSlide = firstIndexImg - clickedTabButtonNumber;
+    console.log(numberToSlide);
+    slideLeftImg(numberToSlide);
+  }
+};
+
+initialCheckTabButton();
+addButtonElem.addEventListener('click', plusImgItem);
+arrowBoxElem.addEventListener('click', moveByArrow);
+tabButtonElem.addEventListener('click', moveByTab);
