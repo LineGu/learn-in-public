@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 const numberToAddElem = document.querySelector('#numberToAdd');
 const addButtonElem = document.querySelector('#add');
 const imageContainerElem = document.querySelector('#sliderContent');
@@ -103,6 +102,7 @@ initialCheckTabButton();
 addButtonElem.addEventListener('click', plusImgItem);
 arrowBoxElem.addEventListener('click', moveByArrow);
 tabButtonElem.addEventListener('click', moveByTab);
+<<<<<<< HEAD
 =======
 const inputValue = document.querySelector('#numberToAdd')
 const addNumber = document.querySelector('#add')
@@ -174,3 +174,5 @@ addNumber.addEventListener('click', plusImgItem)
 ArrowBox.addEventListener('click', moveByArrow)
 tapButton.addEventListener('click', moveByTab)
 >>>>>>> d48e41b ([Repactory] Repactory html class name and index.js)
+=======
+>>>>>>> afe08ff ([refactor] refactor overall  index.js)
