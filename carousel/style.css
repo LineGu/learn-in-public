@@ -55,11 +55,11 @@ body {
   opacity: 1;
 }
 
-button#leftButton {
+button#LEFT_BUTTON {
   background: url('./assets/leftArrow.png') no-repeat;
   background-size: 2em;
 }
-button#rightButton {
+button#RIGHT_BUTTON {
   background: url('./assets/rightArrow.png') no-repeat;
   background-size: 2em;
 }

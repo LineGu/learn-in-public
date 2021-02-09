@@ -5,8 +5,8 @@ const tabButtonElem = document.querySelector('.tabButtonBox');
 const arrowBoxElem = document.querySelector('.ArrowAndImgBox');
 
 const ArrowButton = {
-  left: 'leftButton',
-  right: 'rightButton',
+  left: 'LEFT_BUTTON',
+  right: 'RIGHT_BUTTON',
 };
 
 const createImgElem = (number) =>
@@ -22,29 +22,45 @@ const checkTabButton = (imgNumberToCheck) => {
   tabButtonElemList[indexToCheck].checked = true;
 };
 
-const initialCheckTabButton = () => {
+const initializeCheckTabButton = () => {
   checkTabButton(1);
 };
 
-const plusImgItem = () => {
-  const numberToAdd = numberToAddElem.value;
-  const totalImgCount = imageContainerElem.childElementCount;
+const addImgItem = (totalImgCount, remainingCountToAdd) => {
   const firstIndexImg = imageContainerElem.firstElementChild.classList[0];
-  const lastImgIndex = totalImgCount - firstIndexImg;
-  const lastImg = imageContainerElem.querySelectorAll('div')[lastImgIndex];
-  const lastTabButton = tabButtonElem.lastElementChild;
-  let remainingCountToAdd = Number(numberToAdd);
-
-  resetInputValue(numberToAddElem);
+  const currentlastImgIndex = totalImgCount - firstIndexImg;
+  const lastImg = imageContainerElem.querySelectorAll('div')[currentlastImgIndex];
 
   while (remainingCountToAdd) {
     const PageNumberToAdd = totalImgCount + remainingCountToAdd;
 
     lastImg.insertAdjacentHTML('afterend', createImgElem(PageNumberToAdd));
+
+    remainingCountToAdd -= 1;
+  }
+};
+
+const addTabItem = (totalImgCount, remainingCountToAdd) => {
+  const lastTabButton = tabButtonElem.lastElementChild;
+
+  while (remainingCountToAdd) {
+    const PageNumberToAdd = totalImgCount + remainingCountToAdd;
+
     lastTabButton.insertAdjacentHTML('afterend', createTabElem(PageNumberToAdd));
 
     remainingCountToAdd -= 1;
   }
+};
+
+const addImgTabElem = () => {
+  const numberToAdd = numberToAddElem.value;
+  const totalImgCount = imageContainerElem.childElementCount;
+  let remainingCountToAdd = Number(numberToAdd);
+
+  resetInputValue(numberToAddElem);
+
+  addImgItem(totalImgCount, remainingCountToAdd);
+  addTabItem(totalImgCount, remainingCountToAdd);
 };
 
 const slideRightImg = (numberToSlide) => {
@@ -64,7 +80,7 @@ const slideLeftImg = (numberToSlide) => {
 };
 
 const moveByArrow = (event) => {
-  const directionToMove = event.target.id;
+  const { id: directionToMove } = event.target;
 
   switch (directionToMove) {
     case ArrowButton.right:
@@ -81,93 +97,23 @@ const moveByArrow = (event) => {
 };
 
 const moveByTab = (event) => {
-  const clickedTabButtonNumber = Number(event.target.value);
-  const firstIndexImg = Number(imageContainerElem.firstElementChild.classList[0]);
+  const { value: clickedTabButtonNumber } = event.target;
+  const firstIndexImg = imageContainerElem.firstElementChild.classList[0];
   const isSlideToRight = firstIndexImg < clickedTabButtonNumber;
+  const numberToSlide = isSlideToRight
+    ? clickedTabButtonNumber - firstIndexImg
+    : firstIndexImg - clickedTabButtonNumber;
 
   checkTabButton(clickedTabButtonNumber);
-
   if (isSlideToRight) {
-    const numberToSlide = clickedTabButtonNumber - firstIndexImg;
-    console.log(numberToSlide);
     slideRightImg(numberToSlide);
-  } else if (!isSlideToRight) {
-    const numberToSlide = firstIndexImg - clickedTabButtonNumber;
-    console.log(numberToSlide);
-    slideLeftImg(numberToSlide);
+    return;
   }
+
+  slideLeftImg(numberToSlide);
 };
 
-initialCheckTabButton();
-addButtonElem.addEventListener('click', plusImgItem);
+initializeCheckTabButton();
+addButtonElem.addEventListener('click', addImgTabElem);
 arrowBoxElem.addEventListener('click', moveByArrow);
 tabButtonElem.addEventListener('click', moveByTab);
-const inputValue = document.querySelector('#numberToAdd');
-const addNumber = document.querySelector('#add');
-const imageContainer = document.querySelector('#sliderContent');
-const tapButton = document.querySelector('.tapButtonBox');
-const ArrowBox = document.querySelector('.ArrowAndImgBox');
-
-const makeImgToAdd = (number) => {
-  return (
-    `<div class="` +
-    `${number}` +
-    `"><img class="plus" src="./assets/basis.png" alt="사진을 불러올 수 없습니다." /><strong>` +
-    `${number}` +
-    `</strong></div>`
-  );
-};
-const makeTabToAdd = (number) => {
-  return `<input type="radio" name="page" value="` + `${number}` + `" />`;
-};
-
-const tabbuttonCheck = (index) => {
-  const tapButtonList = tapButton.querySelectorAll('input');
-  tapButtonList[index].checked = true;
-};
-
-const plusImgItem = () => {
-  const numberToAdd = inputValue.value;
-  const currentAllImg = imageContainer.childElementCount;
-  const currentFirstImg = imageContainer.firstElementChild.getAttribute('class');
-  inputValue.value = '';
-
-  for (let i = 0; i < numberToAdd; i++) {
-    const lastImg = imageContainer.querySelectorAll('div')[currentAllImg - currentFirstImg + i];
-    lastImg.insertAdjacentHTML('afterend', makeImgToAdd(i + currentAllImg + 1));
-    tapButton.insertAdjacentHTML('beforeend', makeTabToAdd(i + currentAllImg + 1));
-  }
-};
-
-const moveByArrow = (event) => {
-  const first = imageContainer.firstElementChild;
-  const last = imageContainer.lastElementChild;
-  const direction = event.target.id;
-
-  switch (direction) {
-    case 'rightButton':
-      imageContainer.append(first);
-      break;
-
-    case 'leftButton':
-      imageContainer.prepend(last);
-      break;
-  }
-  tabbuttonCheck(imageContainer.firstElementChild.getAttribute('class') - 1);
-};
-
-const moveByTab = (event) => {
-  const targetTap = event.target.value;
-  for (let i = 0; i < imageContainer.childElementCount; i++) {
-    if (imageContainer.firstElementChild.getAttribute('class') === targetTap) {
-      break;
-    }
-    let first = imageContainer.firstElementChild;
-    imageContainer.append(first);
-  }
-};
-
-tapButton.firstElementChild.checked = true;
-addNumber.addEventListener('click', plusImgItem);
-ArrowBox.addEventListener('click', moveByArrow);
-tapButton.addEventListener('click', moveByTab);
