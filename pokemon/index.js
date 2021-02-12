@@ -33,7 +33,7 @@ const insertPokemonElemToDom = (pokemonElem) => {
 };
 
 const createPokemonElem = (pokemonObject) =>
-  `<img src="${pokemonObject.img}" alt ="${pokemonObject.name} 사진"/> <p>이름 : ${pokemonObject.name}</p>`;
+  `<div><img src="${pokemonObject.img}" alt ="${pokemonObject.name} 사진"/> <p>이름 : ${pokemonObject.name}</p></div>`;
 
 const findPokemon = async () => {
   const idToFind = getIdToFind();
