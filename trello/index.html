@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./cssRest.css" />
+    <link rel="stylesheet" href="./style.css" />
+    <title>trello-practice</title>
+  </head>
+
+  <body>
+    <h1>Trello Practice!!</h1>
+
+    <section class="main-container">
+      <div class="main-container-top">
+        <div class="main-container-top-left">
+          <strong>프로젝트</strong>
+          <p class="update-notify-box">update ? minute ago</p>
+        </div>
+        <div class="main-container-top-right">
+          <input class="filter-cards" placeholder="filter-cards" />
+        </div>
+      </div>
+      <div class="main-container-bottom">
+        <section class="card-container" draggable="true" id="To do">
+          <div class="card-box">
+            <div class="card-box-header">
+              <p>2</p>
+              <strong>To do</strong>
+              <div class="plus-img">+</div>
+              <div class="more-img">...</div>
+            </div>
+          </div>
+        </section>
+
+        <section class="add-card-container">
+          <strong>+ Add column</strong>
+        </section>
+      </div>
+    </section>
+    <div class="modal hidden">
+      <div class="bg"></div>
+      <div class="modalBox">
+        <div class="modal-top">
+          <p>Add a card container</p>
+          <p class="modal-close">X</p>
+        </div>
+        <div class="modal-botton">
+          <p>Card container name</p>
+          <input class="new-container-name" placeholder="Enter a container name" />
+          <button class="confirm-button">Create Column</button>
+        </div>
+      </div>
+    </div>
+    <script type="module" src="./app.js" defer></script>
+  </body>
+</html>
