@@ -8,12 +8,17 @@ import {
 
 export const cardContainerModel = {
   addCardContainer(name) {
-    const newCardContainer = createCardContainerObject(name);
+    const newContainerId = cardContainers.length;
+    const newCardContainer = createCardContainerObject(name, newContainerId);
     cardContainers.push(newCardContainer);
     Observation.notify(cardContainers);
   },
 
-  deleteCardContainer(indexOfDeleteContainer) {
+  deleteCardContainer(idOfDeleteContainer) {
+    const containerToDelete = cardContainers.filter((cardContainer) => {
+      if (cardContainer.id === Number(idOfDeleteContainer)) return true;
+    });
+    const indexOfDeleteContainer = cardContainers.indexOf(containerToDelete[0]);
     cardContainers.splice(indexOfDeleteContainer, 1);
     Observation.notify(cardContainers);
   },

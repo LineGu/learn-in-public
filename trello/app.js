@@ -3,9 +3,9 @@ import { cardContainersView } from './views/view.mjs';
 import { cardContainers } from './models/card_data.mjs';
 
 const initTrelloApp = () => {
-  CardContainerController.init();
-
   cardContainersView.render(cardContainers);
+  CardContainerController.init();
+  CardContainerController.initEventHandler();
 };
 
 window.addEventListener('DOMContentLoaded', initTrelloApp);

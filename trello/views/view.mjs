@@ -16,7 +16,12 @@ export const cardContainersView = {
           .map((card) => createCardElem(card.header, card.body, card.footer))
           .join('');
 
-        return createCardContainerElem(cardContainer.name, cardContainer.count, cardsElem);
+        return createCardContainerElem(
+          cardContainer.name,
+          cardContainer.count,
+          cardsElem,
+          cardContainer.id,
+        );
       })
       .join('');
 
@@ -29,6 +34,14 @@ export const cardContainersView = {
 
   closeModalForContainer() {
     document.querySelector('.modal').classList.add('hidden');
+  },
+
+  openEditModalForContainer(idOfElem) {
+    document.getElementById(`${idOfElem}`).classList.remove('hidden');
+  },
+
+  closeEditModalForContainer(elemToClose) {
+    elemToClose.classList.add('hidden');
   },
 
   resetValue(elem) {
