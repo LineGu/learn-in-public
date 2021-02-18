@@ -1,6 +1,7 @@
 import { Observation } from '../utils/observable.mjs';
 import { cardContainerModel, cardModel } from '../models/model.mjs';
 import { cardContainersView } from '../views/view.mjs';
+import { cardContainers } from '../models/card_data.mjs';
 
 export const CardContainerController = {
   init() {
@@ -15,6 +16,37 @@ export const CardContainerController = {
     CardContainerController.ContainerEditModalButtonElems = document.querySelectorAll(
       '.more-img-container',
     );
+
+    CardContainerController.buttonToOpenAddingCardElems = document.querySelectorAll('.plus-img');
+    CardContainerController.buttonToCloseAddingCardElems = document.querySelectorAll(
+      '.confirm-button-cancle',
+    );
+
+    CardContainerController.buttonToOpenEditCardElems = document.querySelectorAll(
+      '.edit-mode-card',
+    );
+    CardContainerController.buttonToCloseEditCardElems = document.querySelectorAll(
+      '.confirm-button-cancle-edit',
+    );
+
+    CardContainerController.editModeButtonElems = document.querySelectorAll('.edit-mode-container');
+    CardContainerController.confirmButtonForContainerEditElems = document.querySelectorAll(
+      '.confirm-container-edit',
+    );
+
+    CardContainerController.confirmButtontoAddCardElems = document.querySelectorAll(
+      '.confirm-button-add',
+    );
+
+    CardContainerController.confirmButtonForCardEditElems = document.querySelectorAll(
+      '.confirm-button-add-edit',
+    );
+
+    CardContainerController.filterOfCardElem = document.querySelector('.filter-cards');
+
+    CardContainerController.buttonToRemoveCardElems = document.querySelectorAll('.remove-card');
+
+    CardContainerController.CardEditModalButtonElems = document.querySelectorAll('.more-img-card');
 
     CardContainerController.subscribeObservation();
   },
@@ -31,6 +63,19 @@ export const CardContainerController = {
     CardContainerController.attachEditContainerModalHandler();
     CardContainerController.attachEditContainerModalHandlerToClose();
     CardContainerController.attachDeleteContainerHandler();
+    CardContainerController.attachOpenModalForAddingCardHandler();
+    CardContainerController.attachCloseModalForAddingCardHandler();
+    CardContainerController.attachOpenEditModeForContainer();
+    CardContainerController.attachConfirmEditModeForContainer();
+    CardContainerController.attachConfirmAddingCard();
+    CardContainerController.attachEditCardModalHandler();
+    CardContainerController.attachEditCardModalHandlerToClose();
+    CardContainerController.attachDeleteCardHandler();
+    CardContainerController.attachOpenModalToEditCardHandler();
+    CardContainerController.attachCloseModalToEditCardHandler();
+    CardContainerController.attachConfirmEditForCard();
+    CardContainerController.attachDeleteCardForImgHandler();
+    CardContainerController.attachFilterCard();
   },
 
   attachEventHandler(data) {
@@ -38,6 +83,18 @@ export const CardContainerController = {
     CardContainerController.attachEditContainerModalHandler();
     CardContainerController.attachEditContainerModalHandlerToClose();
     CardContainerController.attachDeleteContainerHandler();
+    CardContainerController.attachOpenModalForAddingCardHandler();
+    CardContainerController.attachCloseModalForAddingCardHandler();
+    CardContainerController.attachOpenEditModeForContainer();
+    CardContainerController.attachConfirmEditModeForContainer();
+    CardContainerController.attachConfirmAddingCard();
+    CardContainerController.attachEditCardModalHandler();
+    CardContainerController.attachEditCardModalHandlerToClose();
+    CardContainerController.attachDeleteCardHandler();
+    CardContainerController.attachOpenModalToEditCardHandler();
+    CardContainerController.attachCloseModalToEditCardHandler();
+    CardContainerController.attachConfirmEditForCard();
+    CardContainerController.attachDeleteCardForImgHandler();
   },
 
   attachCardContainerAddHandler() {
@@ -99,5 +156,218 @@ export const CardContainerController = {
         cardContainerModel.deleteCardContainer(idOfDeleteContainer);
       }),
     );
+  },
+
+  attachOpenModalForAddingCardHandler() {
+    const { buttonToOpenAddingCardElems } = CardContainerController;
+
+    buttonToOpenAddingCardElems.forEach((elem) =>
+      elem.addEventListener('click', (event) => {
+        const addingModalIdToOpen = `${event.target.id}-modal`;
+        cardContainersView.openModalOfAddingCard(addingModalIdToOpen);
+      }),
+    );
+  },
+
+  attachCloseModalForAddingCardHandler() {
+    const { buttonToCloseAddingCardElems } = CardContainerController;
+
+    buttonToCloseAddingCardElems.forEach((elem) =>
+      elem.addEventListener('click', (event) => {
+        const addingModalIdToClose = `${event.target.id.substring(6)}`;
+
+        cardContainersView.closeModalOfAddingCard(addingModalIdToClose);
+      }),
+    );
+  },
+
+  attachOpenEditModeForContainer() {
+    const { editModeButtonElems } = CardContainerController;
+
+    editModeButtonElems.forEach((elem) =>
+      elem.addEventListener('click', (event) => {
+        const idToOpenEditMode = `${event.target.id}-mode`;
+
+        cardContainersView.openEditModeForContainer(idToOpenEditMode);
+      }),
+    );
+  },
+
+  attachConfirmEditModeForContainer() {
+    const { confirmButtonForContainerEditElems } = CardContainerController;
+
+    confirmButtonForContainerEditElems.forEach((elem) =>
+      elem.addEventListener('click', (event) => {
+        const editedName = document.getElementById(`${event.target.id.substring(8)}`).value;
+        cardContainerModel.editContainerName(event.target.id.substring(20), editedName);
+      }),
+    );
+  },
+
+  attachConfirmAddingCard() {
+    const { confirmButtontoAddCardElems } = CardContainerController;
+
+    confirmButtontoAddCardElems.forEach((elem) =>
+      elem.addEventListener('click', (event) => {
+        const idOfContainer = event.target.id.substring(9);
+
+        const titleOfNewCard = document.querySelector(`.new-card-header-${idOfContainer}`).value;
+        const bodyOfNewCard = document.querySelector(`.new-card-body-${idOfContainer}`).value;
+
+        if (titleOfNewCard === '' && bodyOfNewCard === '') {
+          alert('값을 입력하세요.');
+          return;
+        }
+        cardModel.addCard(idOfContainer, titleOfNewCard, bodyOfNewCard);
+      }),
+    );
+  },
+
+  attachEditCardModalHandler() {
+    const { CardEditModalButtonElems } = CardContainerController;
+
+    CardEditModalButtonElems.forEach((elem) =>
+      elem.addEventListener('click', (event) => {
+        const editModalIdToOpen = `edit-modal-${event.target.id.substring(5)}`;
+        cardContainersView.openEditModalForCard(editModalIdToOpen);
+      }),
+    );
+  },
+
+  attachEditCardModalHandlerToClose() {
+    const { bodyElem } = CardContainerController;
+    bodyElem.addEventListener('click', (event) => {
+      if (event.target.classList[0] !== 'more-img-card') {
+        const editModalOpened = document.querySelectorAll('.edit-modal-box-card');
+        editModalOpened.forEach((elem) => cardContainersView.closeEditModalForCard(elem));
+      }
+    });
+  },
+
+  attachDeleteCardHandler() {
+    const deleteCardButtonElems = document.querySelectorAll('.delete-card');
+
+    deleteCardButtonElems.forEach((elem) =>
+      elem.addEventListener('click', (event) => {
+        const adressOfDeleteCard = elem.id.substring(7).split('-');
+        const idOfContainerToDelete = adressOfDeleteCard[0];
+        const idOfCardToDelete = adressOfDeleteCard[1];
+        cardModel.deleteCard(idOfContainerToDelete, idOfCardToDelete);
+      }),
+    );
+  },
+
+  attachDeleteCardForImgHandler() {
+    const { buttonToRemoveCardElems } = CardContainerController;
+    buttonToRemoveCardElems.forEach((elem) =>
+      elem.addEventListener('click', (event) => {
+        const adressOfDeleteCard = elem.classList[1].substring(7).split('-');
+        const idOfContainerToDelete = adressOfDeleteCard[0];
+        const idOfCardToDelete = adressOfDeleteCard[1];
+
+        const parentElemToDelete = document.querySelector(
+          `#card-box-body-${idOfContainerToDelete}`,
+        );
+        const elemToDelete = document.querySelector(
+          `#card-total-box-${idOfContainerToDelete}-${idOfCardToDelete}`,
+        );
+
+        const indexOfDeleteContainer = cardContainerModel.findContainerIndexById(
+          idOfContainerToDelete,
+        );
+        const indexOfDeleteCard = cardModel.findCardIndexById(
+          idOfContainerToDelete,
+          idOfCardToDelete,
+        );
+        cardContainers[indexOfDeleteContainer].count -= 1;
+        cardContainers[indexOfDeleteContainer].cards.splice(indexOfDeleteCard, 1);
+        parentElemToDelete.removeChild(elemToDelete);
+      }),
+    );
+  },
+
+  attachOpenModalToEditCardHandler() {
+    const { buttonToOpenEditCardElems } = CardContainerController;
+
+    buttonToOpenEditCardElems.forEach((elem) =>
+      elem.addEventListener('click', (event) => {
+        const idOfElemToOpen = `edit-box-${event.target.id.substring(5)}`;
+        const idOfElemToClose = `card-${event.target.id.substring(5)}`;
+
+        cardContainersView.openEditCard(idOfElemToOpen, idOfElemToClose);
+      }),
+    );
+  },
+
+  attachCloseModalToEditCardHandler() {
+    const { buttonToCloseEditCardElems } = CardContainerController;
+
+    buttonToCloseEditCardElems.forEach((elem) =>
+      elem.addEventListener('click', (event) => {
+        const idOfElemToOpen = `card-${event.target.id.substring(7)}`;
+        const idOfElemToClose = `edit-box-${event.target.id.substring(7)}`;
+
+        cardContainersView.closeEditCard(idOfElemToOpen, idOfElemToClose);
+      }),
+    );
+  },
+
+  attachConfirmEditForCard() {
+    const { confirmButtonForCardEditElems } = CardContainerController;
+
+    confirmButtonForCardEditElems.forEach((elem) =>
+      elem.addEventListener('click', (event) => {
+        const adressOfEditCard = elem.id.substring(13).split('-');
+        const idOfContainerToEdit = adressOfEditCard[0];
+        const idOfCardToEdit = adressOfEditCard[1];
+
+        const titleOfEditCard = document.querySelector(
+          `.edit-card-header-${idOfContainerToEdit}-${idOfCardToEdit}`,
+        ).value;
+        const bodyOfEditCard = document.querySelector(
+          `.edit-card-body-${idOfContainerToEdit}-${idOfCardToEdit}`,
+        ).value;
+
+        if (titleOfEditCard === '' && bodyOfEditCard === '') {
+          alert('값을 입력하세요.');
+          return;
+        }
+        cardModel.editCard(idOfContainerToEdit, idOfCardToEdit, titleOfEditCard, bodyOfEditCard);
+      }),
+    );
+  },
+
+  attachFilterCard() {
+    const { filterOfCardElem } = CardContainerController;
+
+    filterOfCardElem.addEventListener('input', () => {
+      const valueOfFilter = filterOfCardElem.value;
+
+      cardContainers.forEach((cardContainer) => {
+        cardContainer.cards.forEach((card) => {
+          if (card.header.includes(valueOfFilter)) {
+            if (
+              document
+                .querySelector(`#card-total-box-${cardContainer.id}-${card.id}`)
+                .classList.contains('hidden')
+            ) {
+              document
+                .querySelector(`#card-total-box-${cardContainer.id}-${card.id}`)
+                .classList.remove('hidden');
+            }
+          } else {
+            if (
+              !document
+                .querySelector(`#card-total-box-${cardContainer.id}-${card.id}`)
+                .classList.contains('hidden')
+            ) {
+              document
+                .querySelector(`#card-total-box-${cardContainer.id}-${card.id}`)
+                .classList.add('hidden');
+            }
+          }
+        });
+      });
+    });
   },
 };

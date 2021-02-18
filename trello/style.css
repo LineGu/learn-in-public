@@ -127,7 +127,7 @@ h1 {
   border-left: none;
   outline: none;
   height: 33px;
-  margin-top: 11px;
+  margin-top: 12px;
   padding-right: 10px;
   font-size: 0.85em;
   color: #77797a;
@@ -165,17 +165,7 @@ h1 {
   cursor: pointer;
   color: #376fd2;
 }
-.card-container-no-event {
-  display: flex;
-  flex-wrap: wrap;
-  overflow: auto;
-  flex: 0 0 350px;
-  height: 33em;
-  flex-direction: column;
-  background-color: #f6f8fa;
-  border: 1px solid #e6e8eb;
-  margin: 20px 30px 1% 1%;
-  border-radius: 3%;
+.no-event {
   pointer-events: none;
 }
 
@@ -190,12 +180,6 @@ h1 {
   border: 1px solid #e6e8eb;
   margin: 20px 30px 1% 1%;
   border-radius: 3%;
-}
-
-.card-container:active {
-  border: 2px solid #7baae4;
-  box-shadow: 1px 1px 5px #acc8eb;
-  cursor: move;
 }
 
 .card-box {
@@ -326,11 +310,6 @@ h1 {
   box-shadow: 0.7px 0.7px 3px #84888d;
 }
 
-.card:active {
-  border: 2px solid #7baae4;
-  box-shadow: 1px 1px 5px #acc8eb;
-}
-
 .add-card-container:hover {
   border: 2px dotted #25292e;
   color: #25292e;
@@ -434,7 +413,7 @@ h1 {
 }
 
 [class^='confirm-button']:hover {
-  background-color: #79be7f;
+  background-color: #6ab870;
   border: 1px solid #78bb7f;
   outline: none;
 }
@@ -443,7 +422,7 @@ h1 {
   outline: none;
 }
 [class^='confirm-button']:active {
-  background-color: #579c5d;
+  background-color: #48854d;
   border: 1px solid #56a05d;
 }
 
@@ -583,6 +562,138 @@ h1 {
   background-color: #acb5bd;
 }
 
+.edit-modal-box-card {
+  position: absolute;
+  margin: 5px 0 0 143px;
+  background-color: #7f8288;
+  border-radius: 0.5em;
+  width: 180px;
+  height: 80px;
+  box-shadow: 1px 1px 2px #acc8eb;
+  color: #ffffff;
+  z-index: 10;
+  float: right;
+}
+
+.edit-modal-box-card > .top {
+  display: flex;
+  align-items: center;
+  height: 50%;
+  padding-left: 10%;
+  border-radius: 0.7em;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  border-bottom: 1px solid #e6e8eb;
+}
+
+.edit-modal-box-card > .delete-card {
+  display: flex;
+  align-items: center;
+  height: 50%;
+  border-radius: 0.7em;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  padding-left: 10%;
+}
+
+.edit-modal-box-card:after {
+  border-top: 0px solid #f6f8fa;
+  border-left: 7px solid #f6f8fa;
+  border-right: 7px solid #f6f8fa;
+  border-bottom: 10px solid #7f8288;
+  content: '';
+  position: absolute;
+  top: -10px;
+  left: 155px;
+}
+
+.edit-modal-box-card > .top:hover {
+  background-color: royalblue;
+  cursor: pointer;
+}
+
+.edit-modal-box-card > .delete-card:hover {
+  background-color: royalblue;
+  cursor: pointer;
+}
+
+.edit-card-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin: 10px 0 0 15px;
+  background-color: #ffffff;
+  width: 320px;
+  border: 1px solid #e6e8eb;
+  border-radius: 0.4em;
+}
+
+.edit-card-box > .input-edit-card {
+  margin: 0 0 0 10px;
+}
+
+.edit-card-box > .input-edit-card > .edit-card-header {
+  width: 89%;
+  height: 10%;
+  border-radius: 0.4em;
+  margin: 8px 0 8px 0;
+  border: 1px solid #a5abb1;
+  padding: 5px;
+  padding-left: 15px;
+  font-size: 1em;
+}
+.edit-card-box > .input-edit-card > .edit-card-header:focus {
+  border: 1px solid #2a66cf;
+  box-shadow: 0 0 1px 3px #bfd0f0;
+}
+
+.edit-card-box > .input-edit-card > .edit-card-body {
+  width: 89%;
+  height: 50px;
+  border-radius: 0.4em;
+  margin: 8px 0 8px 0;
+  border: 1px solid #a5abb1;
+  padding: 5px;
+  padding-left: 15px;
+  margin: 0;
+  resize: vertical;
+  font-size: 1.1em;
+}
+
+.edit-card-box > .input-edit-card > .edit-card-body::placeholder {
+  font-size: 1em;
+}
+
+.edit-card-box > .input-edit-card > .edit-card-body:focus {
+  border: 1px solid #2a66cf;
+  box-shadow: 0 0 1px 3px #bfd0f0;
+}
+
+.edit-card-box > .confirm-card {
+}
+
+.edit-card-box > .confirm-card > [class^='confirm-button'] {
+  margin: 7px 0 7px 0;
+  width: 11em;
+  height: 2.5em;
+  font-weight: 700;
+}
+
+.edit-card-box > .confirm-card > .confirm-button-cancle-edit {
+  background-color: #f6f8fa;
+  border: 1px solid #9e9fa1;
+  color: #25292e;
+}
+
+.edit-card-box > .confirm-card > .confirm-button-cancle-edit:hover {
+  background-color: #cad4dd;
+}
+
+.edit-card-box > .confirm-card > .confirm-button-cancle-edit:active {
+  background-color: #acb5bd;
+}
+
 @keyframes shake {
   0% {
     transform: rotate(0deg);
@@ -621,11 +732,21 @@ h1 {
     left: 1px;
   }
   100% {
-    left: ;
+    left: 0;
   }
 }
 
 .hidden {
   display: none;
   pointer-events: none;
+}
+
+.no-event {
+  pointer-events: none;
+}
+
+.active {
+  border: 2px solid #7baae4;
+  box-shadow: 1px 1px 5px #acc8eb;
+  cursor: move;
 }
