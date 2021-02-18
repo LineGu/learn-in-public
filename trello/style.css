@@ -198,7 +198,7 @@ h1 {
   z-index: 0;
   background-color: #ffffff;
   width: 320px;
-  margin: 1em 0 1em 1em;
+  margin: 0 0 1em 0;
   word-wrap: break-word;
   white-space: wrap;
   word-break: keep-all;
@@ -306,8 +306,8 @@ h1 {
 
 .card:hover {
   cursor: move;
-  border: 1px solid #989ca1;
-  box-shadow: 0.7px 0.7px 3px #84888d;
+  border: 1px solid #d4d9df;
+  box-shadow: 0.7px 0.7px 3px #dbdfe4;
 }
 
 .add-card-container:hover {
@@ -694,6 +694,14 @@ h1 {
   background-color: #acb5bd;
 }
 
+.card-total-box {
+  width: 322px;
+  border-radius: 0.5em;
+  margin-top: 1em;
+  margin-left: 1em;
+  height: 105px;
+}
+
 @keyframes shake {
   0% {
     transform: rotate(0deg);
@@ -749,4 +757,5 @@ h1 {
   border: 2px solid #7baae4;
   box-shadow: 1px 1px 5px #acc8eb;
   cursor: move;
+  border-radius: 0.5em;
 }

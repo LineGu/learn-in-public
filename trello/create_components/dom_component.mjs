@@ -1,6 +1,6 @@
 export const createCardContainerElem = (container, card) => {
   return `
-  <section class="card-container no-event " draggable="true" id="${container.name}${container.id}">
+  <section class="card-container" draggable="false" id="${container.name}${container.id}">
     <div class="card-box">
       <div class="container-name-modify hidden" id="${container.id}-edit-mode-top">
         <p>Title</p>
@@ -42,7 +42,7 @@ export const createCardContainerElem = (container, card) => {
 
 export const createCardElem = (card, container) => {
   return `
-  <div class="card-total-box" id = "card-total-box-${container.id}-${card.id}">
+  <div class="card-total-box" draggable="true" id = "card-total-box-${container.id}-${card.id}">
     <section class="edit-card-box hidden" id="edit-box-${container.id}-${card.id}">
        <div class="input-edit-card">
         <input class="edit-card-header edit-card-name edit-card-header-${container.id}-${card.id}" value="${card.header}" />
@@ -53,7 +53,7 @@ export const createCardElem = (card, container) => {
         <button class="confirm-button-cancle-edit" id="cancle-${container.id}-${card.id}">Cancle</button>
       </div>
     </section>
-    <div class="card" draggable="true" id="card-${container.id}-${card.id}">
+    <div class="card" id="card-${container.id}-${card.id}">
       <img class="remove-card remove-${container.id}-${card.id} hidden" id="edit-mode-bottom-${container.id}-${card.id}" src="./assets/remove.png" alt="카드 제거 이미지">
       <section class="card-header">
         <img src="./assets/card.png" alt="카드 사진" draggable="false" />

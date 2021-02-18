@@ -2,6 +2,7 @@ import { Observation } from '../utils/observable.mjs';
 import { cardContainerModel, cardModel } from '../models/model.mjs';
 import { cardContainersView } from '../views/view.mjs';
 import { cardContainers } from '../models/card_data.mjs';
+import { dragController } from './dragController.mjs';
 
 export const CardContainerController = {
   init() {
@@ -47,6 +48,8 @@ export const CardContainerController = {
     CardContainerController.buttonToRemoveCardElems = document.querySelectorAll('.remove-card');
 
     CardContainerController.CardEditModalButtonElems = document.querySelectorAll('.more-img-card');
+
+    dragController.init();
 
     CardContainerController.subscribeObservation();
   },
