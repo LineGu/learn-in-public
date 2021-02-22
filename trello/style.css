@@ -172,9 +172,10 @@ h1 {
 .card-container {
   display: flex;
   flex-wrap: wrap;
-  overflow: auto;
+  overflow: hidden;
+  overflow-y: scroll;
   flex: 0 0 350px;
-  height: 33em;
+  height: 36em;
   flex-direction: column;
   background-color: #f6f8fa;
   border: 1px solid #e6e8eb;
@@ -198,7 +199,6 @@ h1 {
   z-index: 0;
   background-color: #ffffff;
   width: 320px;
-  margin: 0 0 1em 0;
   word-wrap: break-word;
   white-space: wrap;
   word-break: keep-all;
@@ -206,20 +206,16 @@ h1 {
   border: 1px solid #e6e8eb;
   border-radius: 0.4em;
   font-size: 0.9em;
+  cursor: move;
 }
 
 .card > .remove-card {
   position: absolute;
-  width: 15px;
-  height: 15px;
+  width: 25px;
+  height: 25px;
+  z-index: 1000;
   margin: -6px 0 0 -6px;
   border-radius: 50%;
-
-  transform-origin: 50% 0%;
-  animation-name: vibe;
-  animation-duration: 0.1s;
-  animation-iteration-count: infinite;
-  animation-delay: 0s;
 }
 
 .card > .remove-card:hover {
@@ -302,12 +298,6 @@ h1 {
 .card-footer-text > p {
   margin-right: 0.3em;
   line-height: 180%;
-}
-
-.card:hover {
-  cursor: move;
-  border: 1px solid #d4d9df;
-  box-shadow: 0.7px 0.7px 3px #dbdfe4;
 }
 
 .add-card-container:hover {
@@ -597,9 +587,9 @@ h1 {
 }
 
 .edit-modal-box-card:after {
-  border-top: 0px solid #f6f8fa;
-  border-left: 7px solid #f6f8fa;
-  border-right: 7px solid #f6f8fa;
+  border-top: 0px solid #ffffff;
+  border-left: 7px solid #ffffff;
+  border-right: 7px solid #ffffff;
   border-bottom: 10px solid #7f8288;
   content: '';
   position: absolute;
@@ -695,40 +685,53 @@ h1 {
 }
 
 .card-total-box {
-  width: 322px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
   border-radius: 0.5em;
-  margin-top: 1em;
-  margin-left: 1em;
-  height: 105px;
+  height: 100%;
+  padding-top: 20px;
+}
+.card-helper-box {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  margin: 0 0 0 0;
+  z-index: 2;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  cursor: move;
+}
+.card-helper-top {
+  width: 100%;
+  height: 50%;
+}
+
+.card-helper-bottom {
+  width: 100%;
+  height: 50%;
 }
 
 @keyframes shake {
-  0% {
-    transform: rotate(0deg);
-  }
-  10% {
-    transform: rotate(45deg);
-  }
-  20% {
-    transform: rotate(-45deg);
-  }
-  30% {
-    transform: rotate(100deg);
-  }
-  40% {
-    transform: rotate(-30deg);
-  }
-  50% {
-    transform: rotate(10deg);
-  }
-  60% {
-    transform: rotate(-10deg);
-  }
-  70% {
-    transform: rotate(0deg);
-  }
+  0%,
   100% {
-    transform: rotate(0deg);
+    transform: translate3d(0, 0, 0);
+  }
+  10%,
+  30%,
+  50%,
+  70%,
+  90% {
+    transform: translate3d(-3px, 0, 0);
+  }
+  20%,
+  40%,
+  60%,
+  80% {
+    transform: translate3d(3px, 0, 0);
   }
 }
 
@@ -744,6 +747,36 @@ h1 {
   }
 }
 
+@keyframes big {
+  from {
+    height: 0;
+  }
+  to {
+    height: 25px;
+  }
+}
+
+@keyframes zoomIn {
+  0% {
+    opacity: 0;
+    transform: scale3d(0.3, 0.3, 0.3);
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.shake {
+  animation-name: shake;
+  animation-duration: 0.3s;
+  animation-iteration-count: infinite;
+  animation-delay: 0s;
+  -webkit-animation-duration: 1.5s;
+  animation-duration: 1.5s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+}
+
 .hidden {
   display: none;
   pointer-events: none;
@@ -753,9 +786,56 @@ h1 {
   pointer-events: none;
 }
 
-.active {
-  border: 2px solid #7baae4;
-  box-shadow: 1px 1px 5px #acc8eb;
-  cursor: move;
+.activer {
+  opacity: 40%;
+  border: 2px solid rgb(113, 152, 211);
+  box-shadow: 0.7px 0.7px 3px #bdc7d3;
   border-radius: 0.5em;
+  cursor: move;
+}
+
+.dragging {
+  border: 2px solid #050607;
+  cursor: move;
+}
+
+.hover {
+  cursor: move;
+  border: 1px solid #d4d9df;
+  box-shadow: 0.7px 0.7px 3px #dbdfe4;
+}
+
+.virtual {
+  opacity: 40%;
+  border: 1px solid #becfe2;
+  box-shadow: 0.7px 0.7px 3px #bdc7d3;
+}
+
+.bigger-top {
+  animation-timing-function: linear;
+  animation-name: big;
+  animation-duration: 0.05s;
+  animation-delay: 0s;
+  cursor: move;
+}
+
+.bigger-bottom {
+  animation-timing-function: linear;
+  animation-name: big;
+  animation-duration: 0.05s;
+  animation-delay: 0s;
+  cursor: move;
+}
+
+.bigger {
+  animation-timing-function: linear;
+  animation-name: a;
+  animation-duration: 0.03s;
+  animation-delay: 0s;
+  cursor: move;
+  animation-fill-mode: none;
+}
+
+.stop-event {
+  pointer-events: none;
 }

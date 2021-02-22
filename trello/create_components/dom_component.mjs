@@ -1,6 +1,6 @@
 export const createCardContainerElem = (container, card) => {
   return `
-  <section class="card-container" draggable="false" id="${container.name}${container.id}">
+  <section class="card-container" draggable="false" id="${container.name}-${container.id}">
     <div class="card-box">
       <div class="container-name-modify hidden" id="${container.id}-edit-mode-top">
         <p>Title</p>
@@ -8,7 +8,7 @@ export const createCardContainerElem = (container, card) => {
         <button class="confirm-container-edit" id="confirm-edited-name-${container.id}">Ok</button>
       </div>
       <div class="card-box-header" id="${container.id}-edit-mode-header">
-        <p>${container.count}</p>
+        <p class="container-count">${container.count}</p>
         <strong class="container-name">${container.name}</strong>
         <div class="plus-img" id="${container.name}${container.id}-card-adding">+</div>
         <div class="more-img-container" id="${container.name}${container.id}-container-edit">...</div>
@@ -42,7 +42,11 @@ export const createCardContainerElem = (container, card) => {
 
 export const createCardElem = (card, container) => {
   return `
-  <div class="card-total-box" draggable="true" id = "card-total-box-${container.id}-${card.id}">
+  <div class="card-total-box"  id = "card-total-box-${container.id}-${card.id}">
+    <div class="card-helper" id = "card-helper-box-${container.id}-${card.id}">
+      <div class="card-helper-top" id ="card-helper-top-${container.id}-${card.id}"></div>
+      <div class="card-helper-bottom" id="card-helper-bottom-${container.id}-${card.id}"></div>
+    </div>
     <section class="edit-card-box hidden" id="edit-box-${container.id}-${card.id}">
        <div class="input-edit-card">
         <input class="edit-card-header edit-card-name edit-card-header-${container.id}-${card.id}" value="${card.header}" />
@@ -53,11 +57,11 @@ export const createCardElem = (card, container) => {
         <button class="confirm-button-cancle-edit" id="cancle-${container.id}-${card.id}">Cancle</button>
       </div>
     </section>
-    <div class="card" id="card-${container.id}-${card.id}">
+    <div class="card" draggable="false" id="card-${container.id}-${card.id}">
       <img class="remove-card remove-${container.id}-${card.id} hidden" id="edit-mode-bottom-${container.id}-${card.id}" src="./assets/remove.png" alt="카드 제거 이미지">
       <section class="card-header">
         <img src="./assets/card.png" alt="카드 사진" draggable="false" />
-        <strong>${card.header}</strong>
+        <strong id="card-header-${card.id}">${card.header}</strong>
         <div class="more-img-card" id="more-${container.id}-${card.id}">...</div>
       </section>
 
@@ -70,11 +74,11 @@ export const createCardElem = (card, container) => {
           </div>
       </section>
 
-      <div>${card.body}</div>
+      <div id="card-body-${card.id}">${card.body}</div>
       <section class="card-footer">
         <div class="card-footer-text">
           <p class="add">added by</p>
-          <p>${card.footer}</p>
+          <p id="card-footer-${card.id}">${card.footer}</p>
         </div>
       </section>
     </div>
