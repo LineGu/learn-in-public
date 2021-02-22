@@ -1,6 +1,10 @@
 export const createCardContainerElem = (container, card) => {
   return `
   <section class="card-container" draggable="false" id="${container.name}-${container.id}">
+    <div class="container-helper" id = "container-helper-box-${container.id}">
+      <div class="container-helper-left" id ="container-helper-left-${container.id}"></div>
+      <div class="container-helper-right" id="container-helper-right-${container.id}"></div>
+    </div>
     <div class="card-box">
       <div class="container-name-modify hidden" id="${container.id}-edit-mode-top">
         <p>Title</p>

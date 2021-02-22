@@ -95,22 +95,51 @@ export const cardContainersView = {
     document.getElementById(`${idOfElemToClose}`).classList.add('hidden');
   },
 
-  showPreviewForContainerDrop(idOfDraggedContiner, idOfDropTarget) {
-    const indexOfDraggedContainer = cardContainerModel.findContainerIndexById(idOfDraggedContiner);
-    const indexOfDropTargetContianer = cardContainerModel.findContainerIndexById(idOfDropTarget);
+  showPreviewForContainerToDropRight(idOfDraggedContainer, idOfDropTarget) {
+    const indexOfDraggedContainer = cardContainerModel.findContainerIndexById(idOfDraggedContainer);
+    const indexOfTarget = cardContainerModel.findContainerIndexById(idOfDropTarget);
 
-    const draggedContainer = cardContainers[indexOfDraggedContainer];
-    const dropTargetContianer = cardContainers[indexOfDropTargetContianer];
+    const nameOfDraggedContainer = cardContainers[indexOfDraggedContainer].name;
 
-    const containerBox = document.querySelector('.main-container-bottom');
-    const draggedContinerElem = document.getElementById(
-      `${draggedContainer.name}-${draggedContainer.id}`,
+    const nameOfTarget = cardContainers[indexOfTarget].name;
+
+    const draggedContainerElem = document.getElementById(
+      `${nameOfDraggedContainer}-${idOfDraggedContainer}`,
     );
-    const dropTargetContianerElem = document.getElementById(
-      `${dropTargetContianer.name}-${dropTargetContianer.id}`,
-    );
+    const dropTargetElem = document.getElementById(`${nameOfTarget}-${idOfDropTarget}`);
 
-    dropTargetContianerElem.after(draggedContinerElem);
+    dropTargetElem.after(draggedContainerElem);
+
+    draggedContainerElem.classList.add('virtual');
+  },
+
+  showPreviewForContainerToDropLeft(idOfDraggedContainer, idOfDropTarget) {
+    const indexOfDraggedContainer = cardContainerModel.findContainerIndexById(idOfDraggedContainer);
+    const indexOfTarget = cardContainerModel.findContainerIndexById(idOfDropTarget);
+
+    const nameOfDraggedContainer = cardContainers[indexOfDraggedContainer].name;
+
+    const nameOfTarget = cardContainers[indexOfTarget].name;
+
+    const draggedContainerElem = document.getElementById(
+      `${nameOfDraggedContainer}-${idOfDraggedContainer}`,
+    );
+    const dropTargetElem = document.getElementById(`${nameOfTarget}-${idOfDropTarget}`);
+
+    dropTargetElem.before(draggedContainerElem);
+
+    draggedContainerElem.classList.add('virtual');
+  },
+
+  showPreviewForCardToDropContainer(idsOfDraggedCard, idOfDropTarget) {
+    const draggedCardElem = document.getElementById(
+      `card-total-box-${idsOfDraggedCard[0]}-${idsOfDraggedCard[1]}`,
+    );
+    const dropTargetCardElem = document.querySelector(`#card-box-body-${idOfDropTarget}`);
+
+    dropTargetCardElem.append(draggedCardElem);
+
+    draggedCardElem.querySelector('.card').classList.add('virtual');
   },
 
   showPreviewForCardToDropTop(idsOfDraggedCard, idsOfDropTarget) {
