@@ -151,7 +151,14 @@ export const cardContainersView = {
       `card-total-box-${idsOfDropTarget[0]}-${idsOfDropTarget[1]}`,
     );
 
-    dropTargetCardElem.before(draggedCardElem);
+    dropTargetCardElem.classList.add('trans-down');
+    draggedCardElem.classList.add('trans-up');
+    setTimeout(() => {
+      dropTargetCardElem.before(draggedCardElem);
+
+      dropTargetCardElem.classList.remove('trans-down');
+      draggedCardElem.classList.remove('trans-up');
+    }, 155);
 
     draggedCardElem.querySelector('.card-helper').classList.remove('card-helper-box');
 
@@ -166,7 +173,14 @@ export const cardContainersView = {
       `card-total-box-${idsOfDropTarget[0]}-${idsOfDropTarget[1]}`,
     );
 
-    dropTargetCardElem.after(draggedCardElem);
+    dropTargetCardElem.classList.add('trans-up');
+    draggedCardElem.classList.add('trans-down');
+    setTimeout(() => {
+      dropTargetCardElem.after(draggedCardElem);
+
+      dropTargetCardElem.classList.remove('trans-up');
+      draggedCardElem.classList.remove('trans-down');
+    }, 155);
 
     draggedCardElem.querySelector('.card-helper').classList.remove('card-helper-box');
 

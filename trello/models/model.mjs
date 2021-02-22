@@ -17,6 +17,14 @@ export const cardContainerModel = {
     return indexOfContainer;
   },
 
+  findContainerIndexByIdVirtual(idOfContainer) {
+    const containerToFind = dragController.virtualArr.filter((cardContainer) => {
+      if (cardContainer.id === Number(idOfContainer)) return true;
+    });
+    const indexOfContainer = dragController.virtualArr.indexOf(containerToFind[0]);
+    return indexOfContainer;
+  },
+
   addCardContainer(name) {
     currentUser.maxContainerId += 1;
     const newCardContainer = createCardContainerObject(name, currentUser.maxContainerId);
@@ -100,6 +108,22 @@ export const cardModel = {
     });
     const indexOfCard = cardContainers[indexOfContainer].cards.indexOf(cardToFind[0]);
     return indexOfCard;
+  },
+
+  findCardIndexByIdVirtual(idOfContainer, idOfCard) {
+    let indexOfContainer = undefined;
+    let indexOfCard = undefined;
+
+    dragController.virtualArr.forEach((container) => {
+      container.cards.forEach((card) => {
+        if (card.id === Number(idOfCard)) {
+          indexOfCard = container.cards.indexOf(card);
+          indexOfContainer = dragController.virtualArr.indexOf(container);
+        }
+      });
+    });
+
+    return [indexOfContainer, indexOfCard];
   },
 
   addCard(idOfContainer, header, body) {

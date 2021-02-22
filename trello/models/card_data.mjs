@@ -2,7 +2,7 @@ export const cardContainers = [
   {
     id: 0,
     name: 'To do',
-    count: 1,
+    count: 2,
     cards: [
       {
         id: 0,
@@ -16,6 +16,25 @@ export const cardContainers = [
         body:
           '기본 내용이 입력됩니다. 기본 내용이 입력됩니다. 기본 내용이 입력됩니다.기본 내용이 입력됩니다. 기본 내용이 입력됩니다. 기본 내용이 입력됩니다. 기본 내용이 입력됩니다. 기본 내용이 입력됩니다. 기본 내용이 입력됩니다. 기본 내용이 입력됩니다. 기본 내용이 입력됩니다. 기본 내용이 입력됩니다.',
         footer: '사용자 이름이 입력됩니다.',
+      },
+    ],
+  },
+  {
+    id: 1,
+    name: '히히',
+    count: 2,
+    cards: [
+      {
+        id: 2,
+        header: '🤩🤩제목이 입력됩니다.🤩🤩',
+        body: '',
+        footer: '키키',
+      },
+      {
+        id: 3,
+        header: '🤩🤩제목이 입력됩니다.🤩🤩',
+        body: '',
+        footer: '키키',
       },
     ],
   },

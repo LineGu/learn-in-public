@@ -7,6 +7,7 @@ import { CardContainerController } from './controller.mjs';
 export const dragController = {
   init() {
     dragController.draggedData = [];
+    dragController.virtualArr = cardContainerModel.createCardContainerObjectVirtual();
 
     dragController.attachHandleDragPropertyOfContainer();
     dragController.attachHandleDrangPropertyOfCard();
@@ -314,17 +315,37 @@ export const dragController = {
         event.preventDefault();
         event.dataTransfer.dropEffect = 'move';
         const cardOfContainer = containerToDragElem.querySelectorAll('.card');
+        const idOfTargetContainer = containerToDragElem.id.split('-')[1];
+        const indexOfTargetContainer = cardContainerModel.findContainerIndexByIdVirtual(
+          idOfTargetContainer,
+        );
 
         if (dragController.draggedData[0].split('-')[0] === 'card') {
           const idsOfdragEnteredCard = [
             dragController.draggedData[0].split('-')[3],
             dragController.draggedData[0].split('-')[4],
           ];
+
           const idOfdropTargetContainer = containerToDragElem.id.split('-')[1];
           cardContainersView.showPreviewForCardToDropContainer(
             idsOfdragEnteredCard,
             idOfdropTargetContainer,
           );
+
+          setTimeout(() => {
+            dragController.virtualArr = cardContainerModel.createCardContainerObjectVirtual();
+
+            const currentCardIndex = cardModel.findCardIndexByIdVirtual(
+              dragController.draggedData[0].split('-')[3],
+              dragController.draggedData[0].split('-')[4],
+            );
+
+            dragController.draggedData[2] = currentCardIndex;
+
+            console.log('컨테이너 밟음~', dragController.draggedData[2]);
+
+            event.preventDefault();
+          }, 160);
         }
       });
       containerToDragElem.addEventListener('drop', (event) => {
@@ -348,35 +369,23 @@ export const dragController = {
           cardToDragTopElem.id.split('-')[3],
           cardToDragTopElem.id.split('-')[4],
         ];
-        const indexOfContainerOfEnteredCard = cardContainerModel.findContainerIndexById(
+        const indexOfContainerOfEnteredCard = cardContainerModel.findContainerIndexByIdVirtual(
           idsOfdragEnteredCard[0],
         );
-        const indexOfCardOfEnteredCard = cardModel.findCardIndexById(
+        const indexOfCardOfEnteredCard = cardModel.findCardIndexByIdVirtual(
           idsOfdragEnteredCard[0],
           idsOfdragEnteredCard[1],
         );
 
         if (
           dragController.draggedData[0].split('-')[0] === 'card' &&
-          dragController.draggedData[2][0] === indexOfContainerOfEnteredCard &&
-          dragController.draggedData[2][1] === indexOfCardOfEnteredCard
+          dragController.draggedData[2][0] === indexOfCardOfEnteredCard[0] &&
+          dragController.draggedData[2][1] + 1 === indexOfCardOfEnteredCard[1]
         ) {
+          console.log(dragController.draggedData[2]);
+          console.log('가상의 바로 아래 탑 박스');
           return;
         }
-        if (
-          dragController.draggedData[1][0] === dragController.draggedData[2][0] &&
-          dragController.draggedData[1][1] === dragController.draggedData[2][1] &&
-          dragController.draggedData[2][0] === indexOfContainerOfEnteredCard &&
-          dragController.draggedData[2][1] + 1 === indexOfCardOfEnteredCard
-        ) {
-          return;
-        }
-        console.log(1);
-        const currrentIndexOfVirtualCard = [
-          indexOfContainerOfEnteredCard,
-          indexOfCardOfEnteredCard,
-        ];
-        dragController.draggedData[2] = currrentIndexOfVirtualCard;
 
         const idOfDraggedConatiner = dragController.draggedData[0].split('-')[3];
         const idOfDraggedCard = dragController.draggedData[0].split('-')[4];
@@ -386,7 +395,37 @@ export const dragController = {
         const idOfDropTargetCard = event.currentTarget.id.split('-')[4];
         const idsOfDDropTargetCard = [idOfDropTargetContainer, idOfDropTargetCard];
 
+        const draggedCardElem = document.getElementById(
+          `card-total-box-${idsOfDraggedCard[0]}-${idsOfDraggedCard[1]}`,
+        );
+        const dropTargetCardElem = document.getElementById(
+          `card-total-box-${idsOfDDropTargetCard[0]}-${idsOfDDropTargetCard[1]}`,
+        );
+
+        if (
+          draggedCardElem.nextSibling !== null &&
+          draggedCardElem.nextSibling.id === dropTargetCardElem.id
+        ) {
+          console.log('걸렸당 ㅎㅎ');
+          return;
+        }
+
         cardContainersView.showPreviewForCardToDropTop(idsOfDraggedCard, idsOfDDropTargetCard);
+
+        setTimeout(() => {
+          dragController.virtualArr = cardContainerModel.createCardContainerObjectVirtual();
+
+          const currrentIndexOfVirtualCard = cardModel.findCardIndexByIdVirtual(
+            idOfDraggedConatiner,
+            idOfDraggedCard,
+          );
+
+          dragController.draggedData[2] = currrentIndexOfVirtualCard;
+
+          console.log('위로 들어감~', dragController.draggedData[2]);
+
+          event.preventDefault();
+        }, 160);
 
         event.preventDefault();
       });
@@ -412,26 +451,21 @@ export const dragController = {
           cardToDragBottomElem.id.split('-')[3],
           cardToDragBottomElem.id.split('-')[4],
         ];
-        const indexOfContainerOfEnteredCard = cardContainerModel.findContainerIndexById(
+        const indexOfContainerOfEnteredCard = cardContainerModel.findContainerIndexByIdVirtual(
           idsOfdragEnteredCard[0],
         );
-        const indexOfCardOfEnteredCard = cardModel.findCardIndexById(
+        const indexOfCardOfEnteredCard = cardModel.findCardIndexByIdVirtual(
           idsOfdragEnteredCard[0],
           idsOfdragEnteredCard[1],
         );
         if (
           dragController.draggedData[0].split('-')[0] === 'card' &&
-          dragController.draggedData[2][0] === indexOfContainerOfEnteredCard &&
-          dragController.draggedData[2][1] - 1 === indexOfCardOfEnteredCard
+          dragController.draggedData[2][0] === indexOfCardOfEnteredCard[0] &&
+          dragController.draggedData[2][1] - 1 === indexOfCardOfEnteredCard[1]
         ) {
+          console.log('가상의 바로 위 아래박스');
           return;
         }
-        const currrentIndexOfVirtualCard = [
-          indexOfContainerOfEnteredCard,
-          indexOfCardOfEnteredCard + 1,
-        ];
-        console.log(2);
-        dragController.draggedData[2] = currrentIndexOfVirtualCard;
 
         const idOfDraggedConatiner = dragController.draggedData[0].split('-')[3];
         const idOfDraggedCard = dragController.draggedData[0].split('-')[4];
@@ -440,17 +474,33 @@ export const dragController = {
         const idOfDropTargetContainer = event.currentTarget.id.split('-')[3];
         const idOfDropTargetCard = event.currentTarget.id.split('-')[4];
         const idsOfDDropTargetCard = [idOfDropTargetContainer, idOfDropTargetCard];
+
         cardContainersView.showPreviewForCardToDropBottom(idsOfDraggedCard, idsOfDDropTargetCard);
 
-        event.preventDefault();
-      });
-      cardToDragBottomElem.addEventListener('drop', (event) => {
-        const virtualCardContainers = cardContainerModel.createCardContainerObjectVirtual();
+        setTimeout(() => {
+          dragController.virtualArr = cardContainerModel.createCardContainerObjectVirtual();
 
-        cardContainers.splice(0, cardContainers.length);
+          dragController.virtualArr = cardContainerModel.createCardContainerObjectVirtual();
 
-        virtualCardContainers.forEach((virtualCardContainer) => {
-          cardContainers.push(virtualCardContainer);
+          const currrentIndexOfVirtualCard = cardModel.findCardIndexByIdVirtual(
+            idOfDraggedConatiner,
+            idOfDraggedCard,
+          );
+
+          dragController.draggedData[2] = currrentIndexOfVirtualCard;
+
+          console.log('아래로 들어감~', dragController.draggedData[2]);
+
+          event.preventDefault();
+        }, 160);
+        cardToDragBottomElem.addEventListener('drop', (event) => {
+          const virtualCardContainers = cardContainerModel.createCardContainerObjectVirtual();
+
+          cardContainers.splice(0, cardContainers.length);
+
+          virtualCardContainers.forEach((virtualCardContainer) => {
+            cardContainers.push(virtualCardContainer);
+          });
         });
 
         event.preventDefault();
