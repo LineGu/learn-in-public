@@ -57,6 +57,7 @@ export const cardContainersView = {
     const containerName = cardContainers[indexOfContainer].name;
 
     cardContainers[indexOfContainer].cards.forEach((card) => {
+      console.log(document.getElementById(`edit-mode-bottom-${idOfContainer}-${card.id}`));
       document
         .getElementById(`edit-mode-bottom-${idOfContainer}-${card.id}`)
         .classList.remove('hidden');
@@ -152,6 +153,8 @@ export const cardContainersView = {
 
     dropTargetCardElem.before(draggedCardElem);
 
+    draggedCardElem.querySelector('.card-helper').classList.remove('card-helper-box');
+
     draggedCardElem.querySelector('.card').classList.add('virtual');
   },
 
@@ -164,6 +167,8 @@ export const cardContainersView = {
     );
 
     dropTargetCardElem.after(draggedCardElem);
+
+    draggedCardElem.querySelector('.card-helper').classList.remove('card-helper-box');
 
     draggedCardElem.querySelector('.card').classList.add('virtual');
   },

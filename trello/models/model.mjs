@@ -21,6 +21,7 @@ export const cardContainerModel = {
     currentUser.maxContainerId += 1;
     const newCardContainer = createCardContainerObject(name, currentUser.maxContainerId);
     cardContainers.push(newCardContainer);
+
     Observation.notify(cardContainers);
   },
 

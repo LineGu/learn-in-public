@@ -46,7 +46,7 @@ export const createCardContainerElem = (container, card) => {
 
 export const createCardElem = (card, container) => {
   return `
-  <div class="card-total-box"  id = "card-total-box-${container.id}-${card.id}">
+  <div class="card-total-box "  id = "card-total-box-${container.id}-${card.id}">
     <div class="card-helper" id = "card-helper-box-${container.id}-${card.id}">
       <div class="card-helper-top" id ="card-helper-top-${container.id}-${card.id}"></div>
       <div class="card-helper-bottom" id="card-helper-bottom-${container.id}-${card.id}"></div>
@@ -71,10 +71,10 @@ export const createCardElem = (card, container) => {
 
       <section class="edit-modal-box-card hidden" id="edit-modal-${container.id}-${card.id}">
           <div class="top edit-mode-card" id="edit-${container.id}-${card.id}">
-            <p>Edit container</p>
+            <p>Edit card</p>
           </div>
           <div class="delete-card" id="delete-${container.id}-${card.id}">
-            <p>Delete container</p>
+            <p>Delete card</p>
           </div>
       </section>
 

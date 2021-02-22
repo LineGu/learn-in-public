@@ -79,6 +79,7 @@ export const CardContainerController = {
     CardContainerController.attachConfirmEditForCard();
     CardContainerController.attachDeleteCardForImgHandler();
     CardContainerController.attachFilterCard();
+    CardContainerController.attachEnterKeyHandler();
   },
 
   attachEventHandler(data) {
@@ -98,6 +99,17 @@ export const CardContainerController = {
     CardContainerController.attachCloseModalToEditCardHandler();
     CardContainerController.attachConfirmEditForCard();
     CardContainerController.attachDeleteCardForImgHandler();
+    CardContainerController.attachEnterKeyHandler();
+  },
+
+  attachEnterKeyHandler() {
+    const modalOfAddingContainer = document.querySelector('#adding-container-modal');
+    const { confirmButtonElem } = CardContainerController;
+    window.addEventListener('keydown', (event) => {
+      if (window.event.keyCode === 13 && !modalOfAddingContainer.classList.contains('hidden')) {
+        confirmButtonElem.click();
+      }
+    });
   },
 
   attachCardContainerAddHandler() {

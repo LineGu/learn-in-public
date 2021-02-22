@@ -17,9 +17,34 @@ export const dragController = {
 
   attachHandleDragPropertyOfContainer() {
     const containerToDragElems = document.querySelectorAll('.card-container');
-
     containerToDragElems.forEach((containerToDragElem) => {
       containerToDragElem.addEventListener('mousedown', (event) => {
+        const boxOfAddingCardElem = containerToDragElem.querySelector('.input-card');
+        const boxOfEditingCardElems = containerToDragElem.querySelectorAll('.edit-card-box');
+        const boxOfEditingContainerElem = containerToDragElem.querySelector(
+          '.container-name-modify',
+        );
+
+        let isValidDrag = true;
+
+        if (!boxOfEditingContainerElem.classList.contains('hidden')) {
+          isValidDrag = false;
+        }
+
+        boxOfEditingCardElems.forEach((elem) => {
+          if (!elem.classList.contains('hidden')) {
+            isValidDrag = false;
+          }
+        });
+
+        if (!isValidDrag) {
+          return;
+        }
+
+        if (!boxOfAddingCardElem.parentElement.classList.contains('hidden')) {
+          event.stopPropagation();
+          return;
+        }
         containerToDragElem.draggable = true;
         event.stopPropagation();
       });
@@ -346,6 +371,7 @@ export const dragController = {
         ) {
           return;
         }
+        console.log(1);
         const currrentIndexOfVirtualCard = [
           indexOfContainerOfEnteredCard,
           indexOfCardOfEnteredCard,
@@ -362,10 +388,6 @@ export const dragController = {
 
         cardContainersView.showPreviewForCardToDropTop(idsOfDraggedCard, idsOfDDropTargetCard);
 
-        document
-          .getElementById(`card-total-box-${idsOfDraggedCard[0]}-${idsOfDraggedCard[1]}`)
-          .querySelector('.card-helper')
-          .classList.add('card-helper-box');
         event.preventDefault();
       });
 
@@ -408,6 +430,7 @@ export const dragController = {
           indexOfContainerOfEnteredCard,
           indexOfCardOfEnteredCard + 1,
         ];
+        console.log(2);
         dragController.draggedData[2] = currrentIndexOfVirtualCard;
 
         const idOfDraggedConatiner = dragController.draggedData[0].split('-')[3];
@@ -418,10 +441,6 @@ export const dragController = {
         const idOfDropTargetCard = event.currentTarget.id.split('-')[4];
         const idsOfDDropTargetCard = [idOfDropTargetContainer, idOfDropTargetCard];
         cardContainersView.showPreviewForCardToDropBottom(idsOfDraggedCard, idsOfDDropTargetCard);
-        document
-          .getElementById(`card-total-box-${idsOfDraggedCard[0]}-${idsOfDraggedCard[1]}`)
-          .querySelector('.card-helper')
-          .classList.add('card-helper-box');
 
         event.preventDefault();
       });
