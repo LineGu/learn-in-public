@@ -151,15 +151,137 @@ export const cardContainersView = {
       `card-total-box-${idsOfDropTarget[0]}-${idsOfDropTarget[1]}`,
     );
 
+    const virtualContainerIndex = dragController.draggedData[2][0];
+    const targetConainerIndex = cardContainerModel.findContainerIndexByIdVirtual(
+      idsOfDropTarget[0],
+    );
+    const virtualCardIndex = dragController.draggedData[2][1];
+    const targetCardIndex = cardModel.findCardIndexByIdVirtual(
+      idsOfDropTarget[0],
+      idsOfDropTarget[1],
+    );
+
+    if (virtualContainerIndex !== targetConainerIndex) {
+      dropTargetCardElem.classList.add('trans-down');
+
+      let siblingElem = dropTargetCardElem.nextElementSibling;
+
+      while (siblingElem != null) {
+        siblingElem.classList.add('trans-down');
+        siblingElem = siblingElem.nextElementSibling;
+      }
+
+      setTimeout(() => {
+        dropTargetCardElem.before(draggedCardElem);
+        dragController.draggedData[2] = targetCardIndex;
+        dropTargetCardElem.classList.remove('trans-down');
+        let siblingElem = dropTargetCardElem.nextElementSibling;
+
+        while (siblingElem != null) {
+          siblingElem.classList.remove('trans-down');
+          siblingElem = siblingElem.nextElementSibling;
+        }
+      }, 155);
+      draggedCardElem.querySelector('.card-helper').classList.remove('card-helper-box');
+
+      draggedCardElem.querySelector('.card').classList.add('virtual');
+      return;
+    }
+
+    const indexOfVirtualCardToGo =
+      virtualCardIndex < targetCardIndex[1] ? targetCardIndex[1] - 1 : targetCardIndex[1];
+
+    if (virtualCardIndex - 1 === indexOfVirtualCardToGo) {
+      dropTargetCardElem.classList.add('trans-down');
+      draggedCardElem.classList.add('trans-up');
+      setTimeout(() => {
+        dropTargetCardElem.before(draggedCardElem);
+        dragController.draggedData[2] = [targetConainerIndex, indexOfVirtualCardToGo];
+
+        dropTargetCardElem.classList.remove('trans-down');
+        draggedCardElem.classList.remove('trans-up');
+      }, 155);
+      draggedCardElem.querySelector('.card-helper').classList.remove('card-helper-box');
+
+      draggedCardElem.querySelector('.card').classList.add('virtual');
+      return;
+    }
+
+    if (virtualCardIndex < indexOfVirtualCardToGo) {
+      let previousSibling = dropTargetCardElem.previousElementSibling;
+
+      while (previousSibling != null) {
+        previousSibling.classList.add('trans-up');
+        previousSibling = previousSibling.previousElementSibling;
+      }
+      draggedCardElem.classList.remove('trans-up');
+      draggedCardElem.classList.add('trans-down');
+      setTimeout(() => {
+        dropTargetCardElem.before(draggedCardElem);
+        dragController.draggedData[2] = [targetConainerIndex, indexOfVirtualCardToGo];
+
+        dragController.draggedData[2][1] = indexOfVirtualCardToGo;
+        draggedCardElem.classList.remove('trans-down');
+        let previousSibling = dropTargetCardElem.previousElementSibling;
+
+        while (previousSibling != null) {
+          previousSibling.classList.remove('trans-up');
+          previousSibling = previousSibling.previousElementSibling;
+        }
+      }, 155);
+      draggedCardElem.querySelector('.card-helper').classList.remove('card-helper-box');
+
+      draggedCardElem.querySelector('.card').classList.add('virtual');
+      return;
+    }
+
+    if (virtualCardIndex < targetCardIndex[1]) {
+      let previousSibling = dropTargetCardElem.previousElementSibling;
+
+      while (previousSibling != null) {
+        previousSibling.classList.add('trans-up');
+        previousSibling = previousSibling.previousElementSibling;
+      }
+      draggedCardElem.remove('trans-up');
+      draggedCardElem.classList.add('trans-down');
+      setTimeout(() => {
+        dropTargetCardElem.before(draggedCardElem);
+        dragController.draggedData[2] = [targetConainerIndex, indexOfVirtualCardToGo];
+
+        draggedCardElem.classList.remove('trans-down');
+        let previousSibling = dropTargetCardElem.previousElementSibling;
+
+        while (previousSibling != null) {
+          previousSibling.classList.remove('trans-up');
+          previousSibling = previousSibling.previousElementSibling;
+        }
+      }, 155);
+      draggedCardElem.querySelector('.card-helper').classList.remove('card-helper-box');
+
+      draggedCardElem.querySelector('.card').classList.add('virtual');
+      return;
+    }
+
     dropTargetCardElem.classList.add('trans-down');
-    draggedCardElem.classList.add('trans-up');
+    let siblingElem = dropTargetCardElem.nextElementSibling;
+
+    while (siblingElem != null) {
+      siblingElem.classList.add('trans-down');
+      siblingElem = siblingElem.nextElementSibling;
+    }
+    draggedCardElem.classList.remove('trans-down');
+
     setTimeout(() => {
       dropTargetCardElem.before(draggedCardElem);
 
       dropTargetCardElem.classList.remove('trans-down');
-      draggedCardElem.classList.remove('trans-up');
-    }, 155);
+      let siblingElem = dropTargetCardElem.nextElementSibling;
 
+      while (siblingElem != null) {
+        siblingElem.classList.remove('trans-down');
+        siblingElem = siblingElem.nextElementSibling;
+      }
+    }, 155);
     draggedCardElem.querySelector('.card-helper').classList.remove('card-helper-box');
 
     draggedCardElem.querySelector('.card').classList.add('virtual');
@@ -173,18 +295,90 @@ export const cardContainersView = {
       `card-total-box-${idsOfDropTarget[0]}-${idsOfDropTarget[1]}`,
     );
 
-    dropTargetCardElem.classList.add('trans-up');
-    draggedCardElem.classList.add('trans-down');
-    setTimeout(() => {
-      dropTargetCardElem.after(draggedCardElem);
+    const virtualContainerIndex = dragController.draggedData[2][0];
+    const targetConainerIndex = cardContainerModel.findContainerIndexByIdVirtual(
+      idsOfDropTarget[0],
+    );
 
-      dropTargetCardElem.classList.remove('trans-up');
-      draggedCardElem.classList.remove('trans-down');
-    }, 155);
+    if (virtualContainerIndex !== targetConainerIndex) {
+      let siblingElem = dropTargetCardElem.nextElementSibling;
 
-    draggedCardElem.querySelector('.card-helper').classList.remove('card-helper-box');
+      while (siblingElem != null) {
+        siblingElem.classList.add('trans-down');
+        siblingElem = siblingElem.nextElementSibling;
+      }
 
-    draggedCardElem.querySelector('.card').classList.add('virtual');
+      setTimeout(() => {
+        dropTargetCardElem.after(draggedCardElem);
+
+        let siblingElem = dropTargetCardElem.nextElementSibling;
+
+        while (siblingElem != null) {
+          siblingElem.classList.remove('trans-down');
+          siblingElem = siblingElem.nextElementSibling;
+        }
+      }, 155);
+      draggedCardElem.querySelector('.card-helper').classList.remove('card-helper-box');
+
+      draggedCardElem.querySelector('.card').classList.add('virtual');
+      return;
+    }
+    const virtualCardIndex = dragController.draggedData[2][1];
+    const targetCardIndex = cardModel.findCardIndexByIdVirtual(
+      idsOfDropTarget[0],
+      idsOfDropTarget[1],
+    );
+
+    const indexOfVirtualCardToGo =
+      virtualCardIndex > targetCardIndex[1] ? targetCardIndex[1] + 1 : targetCardIndex[1];
+
+    if (virtualCardIndex + 1 === targetCardIndex[1]) {
+      dropTargetCardElem.classList.add('trans-up');
+      draggedCardElem.classList.add('trans-down');
+      setTimeout(() => {
+        dropTargetCardElem.after(draggedCardElem);
+
+        dropTargetCardElem.classList.remove('trans-up');
+        draggedCardElem.classList.remove('trans-down');
+      }, 155);
+      draggedCardElem.querySelector('.card-helper').classList.remove('card-helper-box');
+
+      draggedCardElem.querySelector('.card').classList.add('virtual');
+      return;
+    }
+
+    if (indexOfVirtualCardToGo > virtualCardIndex) {
+      draggedCardElem.classList.add('trans-down');
+      let siblingElem = draggedCardElem.nextElementSibling;
+      let cnt = indexOfVirtualCardToGo - virtualCardIndex - 1;
+      while (cnt > 0 && siblingElem !== null) {
+        siblingElem.classList.add('trans-up');
+        siblingElem = siblingElem.nextElementSibling;
+        cnt -= 1;
+      }
+      draggedCardElem.classList.remove('trans-up');
+
+      setTimeout(() => {
+        dropTargetCardElem.after(draggedCardElem);
+        dragController.draggedData[2][1] = [indexOfVirtualCardToGo];
+
+        draggedCardElem.classList.remove('trans-down');
+
+        let previousSibling = draggedCardElem.previousElementSibling;
+
+        while (previousSibling !== null) {
+          previousSibling.classList.remove('trans-up');
+          previousSibling = previousSibling.previousElementSibling;
+        }
+      }, 155);
+      draggedCardElem.querySelector('.card-helper').classList.remove('card-helper-box');
+
+      draggedCardElem.querySelector('.card').classList.add('virtual');
+      return;
+    }
+    document.querySelectorAll('.trans-up').forEach((elem) => {
+      elem.classList.remove('.trans-up');
+    });
   },
 
   resetValue(elem) {

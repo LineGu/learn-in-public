@@ -60,6 +60,7 @@ export const dragController = {
 
     containerToDragElems.forEach((containerToDragElem) => {
       containerToDragElem.addEventListener('dragstart', (event) => {
+        dragController.draggedData = [];
         document.querySelectorAll('.container-helper').forEach((elem) => {
           elem.classList.add('container-helper-box');
         });
@@ -76,7 +77,6 @@ export const dragController = {
         const indexOfContainerOfDraggedCard = cardContainerModel.findContainerIndexById(
           idsOfDraggedContainer[1],
         );
-
         event.dataTransfer.setData('text', `container-${idsOfDraggedContainer[1]}`);
 
         dragController.draggedData.push(`container-${idsOfDraggedContainer[1]}`);
@@ -107,7 +107,6 @@ export const dragController = {
 
         Observation.notify(cardContainers);
         containerToDragElem.draggable = false;
-        dragController.draggedData = [];
       });
     });
 
@@ -159,6 +158,7 @@ export const dragController = {
           elem.classList.add('card-helper-box');
         });
 
+        dragController.draggedData = [];
         cardToDragElem.parentElement
           .querySelector('.card-helper')
           .classList.remove('card-helper-box');
@@ -209,7 +209,6 @@ export const dragController = {
 
         Observation.notify(cardContainers);
         cardToDragElem.draggable = false;
-        dragController.draggedData = [];
       });
     });
 
@@ -308,9 +307,14 @@ export const dragController = {
 
     containerToDragElems.forEach((containerToDragElem) => {
       containerToDragElem.querySelector('.card-box').addEventListener('dragenter', (event) => {
-        event.preventDefault();
         event.stopPropagation();
       });
+      containerToDragElem
+        .querySelector('.card-box-header')
+        .addEventListener('dragenter', (event) => {
+          event.stopPropagation();
+        });
+
       containerToDragElem.addEventListener('dragenter', (event) => {
         event.preventDefault();
         event.dataTransfer.dropEffect = 'move';
@@ -320,6 +324,14 @@ export const dragController = {
           idOfTargetContainer,
         );
 
+        const idOfDraggedContainer = dragController.draggedData[0].split('-')[3];
+        const idOfDraggedCard = dragController.draggedData[0].split('-')[4];
+
+        if (dragController.draggedData[0] === null || dragController.draggedData[0] === undefined) {
+          Observation.notify(cardContainers);
+          event.stopPropagation();
+          return;
+        }
         if (dragController.draggedData[0].split('-')[0] === 'card') {
           const idsOfdragEnteredCard = [
             dragController.draggedData[0].split('-')[3],
@@ -327,26 +339,42 @@ export const dragController = {
           ];
 
           const idOfdropTargetContainer = containerToDragElem.id.split('-')[1];
-          cardContainersView.showPreviewForCardToDropContainer(
-            idsOfdragEnteredCard,
-            idOfdropTargetContainer,
-          );
+          const timerone = setTimeout(() => {
+            cardContainersView.showPreviewForCardToDropContainer(
+              idsOfdragEnteredCard,
+              idOfdropTargetContainer,
+            );
+          }, 10);
 
-          setTimeout(() => {
+          const timer = setTimeout(() => {
             dragController.virtualArr = cardContainerModel.createCardContainerObjectVirtual();
 
             const currentCardIndex = cardModel.findCardIndexByIdVirtual(
-              dragController.draggedData[0].split('-')[3],
-              dragController.draggedData[0].split('-')[4],
+              idOfDraggedContainer,
+              idOfDraggedCard,
             );
 
             dragController.draggedData[2] = currentCardIndex;
 
             console.log('컨테이너 밟음~', dragController.draggedData[2]);
-
+            event.stopPropagation();
             event.preventDefault();
-          }, 160);
+          }, 10);
+
+          containerToDragElem.addEventListener('dragleave', (event) => {
+            clearTimeout(timerone);
+            clearTimeout(timer);
+          });
+          dragController.virtualArr = cardContainerModel.createCardContainerObjectVirtual();
+
+          const currentCardIndex = cardModel.findCardIndexByIdVirtual(
+            idOfDraggedContainer,
+            idOfDraggedCard,
+          );
+
+          dragController.draggedData[2] = currentCardIndex;
         }
+        event.stopPropagation();
       });
       containerToDragElem.addEventListener('drop', (event) => {
         const virtualCardContainers = cardContainerModel.createCardContainerObjectVirtual();
@@ -376,6 +404,11 @@ export const dragController = {
           idsOfdragEnteredCard[0],
           idsOfdragEnteredCard[1],
         );
+        if (dragController.draggedData[0] === null || dragController.draggedData[0] === undefined) {
+          Observation.notify(cardContainers);
+          event.stopPropagation();
+          return;
+        }
 
         if (
           dragController.draggedData[0].split('-')[0] === 'card' &&
@@ -401,10 +434,12 @@ export const dragController = {
         const dropTargetCardElem = document.getElementById(
           `card-total-box-${idsOfDDropTargetCard[0]}-${idsOfDDropTargetCard[1]}`,
         );
-
+        if (draggedCardElem === null) {
+          return;
+        }
         if (
-          draggedCardElem.nextSibling !== null &&
-          draggedCardElem.nextSibling.id === dropTargetCardElem.id
+          draggedCardElem.nextElementSibling !== null &&
+          draggedCardElem.nextElementSibling.id === dropTargetCardElem.id
         ) {
           console.log('걸렸당 ㅎㅎ');
           return;
@@ -426,7 +461,7 @@ export const dragController = {
 
           event.preventDefault();
         }, 160);
-
+        event.stopPropagation();
         event.preventDefault();
       });
 
@@ -458,6 +493,11 @@ export const dragController = {
           idsOfdragEnteredCard[0],
           idsOfdragEnteredCard[1],
         );
+        if (dragController.draggedData[0] === null || dragController.draggedData[0] === undefined) {
+          Observation.notify(cardContainers);
+          event.stopPropagation();
+          return;
+        }
         if (
           dragController.draggedData[0].split('-')[0] === 'card' &&
           dragController.draggedData[2][0] === indexOfCardOfEnteredCard[0] &&
@@ -493,18 +533,18 @@ export const dragController = {
 
           event.preventDefault();
         }, 160);
-        cardToDragBottomElem.addEventListener('drop', (event) => {
-          const virtualCardContainers = cardContainerModel.createCardContainerObjectVirtual();
-
-          cardContainers.splice(0, cardContainers.length);
-
-          virtualCardContainers.forEach((virtualCardContainer) => {
-            cardContainers.push(virtualCardContainer);
-          });
-        });
 
         event.preventDefault();
         event.stopPropagation();
+      });
+      cardToDragBottomElem.addEventListener('drop', (event) => {
+        const virtualCardContainers = cardContainerModel.createCardContainerObjectVirtual();
+
+        cardContainers.splice(0, cardContainers.length);
+
+        virtualCardContainers.forEach((virtualCardContainer) => {
+          cardContainers.push(virtualCardContainer);
+        });
       });
     });
   },
@@ -515,52 +555,6 @@ export const dragController = {
 
     const cardToDragTopElems = document.querySelectorAll('.card-helper-top');
     const cardToDragBottomElems = document.querySelectorAll('.card-helper-bottom');
-    /*
-    containerToDragElems.forEach((containerToDragElem) => {
-      containerToDragElem.addEventListener('drop', (event) => {
-        event.preventDefault();
-        if (event.dataTransfer.getData('text').split('-')[0] === 'container') {
-          const idOfDraggedConatiner = event.dataTransfer.getData('text').split('-')[1];
-          const idOfdropTargetContainer = event.currentTarget.id.split('-')[1];
-
-          cardContainerModel.insertContainer(idOfDraggedConatiner, idOfdropTargetContainer);
-        }
-
-        if (
-          event.dataTransfer.getData('text').split('-')[0] === 'card' &&
-          cardContainers[
-            cardContainerModel.findContainerIndexById(event.currentTarget.id.split('-')[1])
-          ].cards.length === 0
-        ) {
-          const idsOfDraggedElem = event.dataTransfer.getData('text').substring(15).split('-');
-          const idOfdropTargetContainer = event.currentTarget.id.split('-')[1];
-
-          const indexsOfElemToBeInserted = [
-            cardContainerModel.findContainerIndexById(idsOfDraggedElem[0]),
-            cardModel.findCardIndexById(idsOfDraggedElem[0], idsOfDraggedElem[1]),
-          ];
-
-          const ElemToAdd =
-            cardContainers[indexsOfElemToBeInserted[0]].cards[indexsOfElemToBeInserted[1]];
-
-          cardContainers[indexsOfElemToBeInserted[0]].count -= 1;
-          cardContainers[indexsOfElemToBeInserted[0]].cards.splice(
-            [indexsOfElemToBeInserted[1]],
-            1,
-          );
-
-          cardContainers[
-            cardContainerModel.findContainerIndexById(idOfdropTargetContainer)
-          ].count += 1;
-
-          cardContainers[
-            cardContainerModel.findContainerIndexById(idOfdropTargetContainer)
-          ].cards.push(ElemToAdd);
-          Observation.notify(cardContainers);
-        }
-        return;
-      });
-    });*/
 
     document.body.addEventListener('dragover', (event) => event.preventDefault());
   },
