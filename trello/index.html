@@ -9,16 +9,31 @@
   </head>
 
   <body class="body">
-    <h1>Trello Practice!!</h1>
+    <h1>KANBAN Board</h1>
 
     <section class="main-container">
       <div class="main-container-top">
         <div class="main-container-top-left">
-          <strong>프로젝트</strong>
+          <strong>KANBAN board 프로젝트</strong>
           <p class="update-notify-box">update ? minute ago</p>
         </div>
         <div class="main-container-top-right">
+          <img src="./assets/find.png" class="find-img" alt="Magnifier img" />
           <input class="filter-cards" placeholder="filter-cards" />
+        </div>
+        <div class="menu-box">
+          <img src="./assets/menu.png" class="menu-img" alt="menu" />
+          <p class="menu">Menu</p>
+          <img src="./assets/user.png" class="user-img" alt="user img" />
+          <strong>강현구</strong>
+          <div class="menu-modal hidden">
+            <div class="top edit-mode-container" id="${container.id}-edit">
+              <p>Edit container</p>
+            </div>
+            <div class="delete-container" id="${container.id}">
+              <p>Delete container</p>
+            </div>
+          </div>
         </div>
       </div>
 

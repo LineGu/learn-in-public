@@ -1,6 +1,8 @@
 export const currentUser = {
-  name: 'Hyun Gu Kang',
+  name: '강 현구',
   id: 'kanghg1116',
-  maxContainerId: 1,
-  maxCardId: 3,
+
+  project: ['KANBAN board'],
+  maxContainerId: 2,
+  maxCardId: 0,
 };

@@ -49,6 +49,9 @@ export const CardContainerController = {
 
     CardContainerController.CardEditModalButtonElems = document.querySelectorAll('.more-img-card');
 
+    CardContainerController.menuModalElem = document.querySelector('.menu-modal');
+    CardContainerController.menuButtonElem = document.querySelector('.menu-img');
+
     dragController.init();
 
     CardContainerController.subscribeObservation();
@@ -80,6 +83,8 @@ export const CardContainerController = {
     CardContainerController.attachDeleteCardForImgHandler();
     CardContainerController.attachFilterCard();
     CardContainerController.attachEnterKeyHandler();
+    CardContainerController.attachOpenMenuModalHandler();
+    CardContainerController.attachCloseMenuModalHandler();
   },
 
   attachEventHandler(data) {
@@ -395,6 +400,30 @@ export const CardContainerController = {
       filterOfCardElem.addEventListener('input', () => {
         clearTimeout(fliterCard);
       });
+    });
+  },
+
+  attachOpenMenuModalHandler() {
+    const { menuModalElem, menuButtonElem } = CardContainerController;
+
+    menuButtonElem.addEventListener('click', (event) => {
+      if (!menuModalElem.classList.contains('hidden')) {
+        menuModalElem.classList.add('hidden');
+        event.stopPropagation();
+        return;
+      }
+      menuModalElem.classList.remove('hidden');
+      event.stopPropagation();
+      return;
+    });
+  },
+
+  attachCloseMenuModalHandler() {
+    const { bodyElem, menuModalElem, menuButtonElem } = CardContainerController;
+
+    bodyElem.addEventListener('click', (event) => {
+      menuModalElem.classList.add('hidden');
+      event.stopPropagation();
     });
   },
 };

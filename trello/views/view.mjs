@@ -67,11 +67,18 @@ export const cardContainersView = {
     });
     document.getElementById(`${idOfElem}-top`).classList.remove('hidden');
     document.getElementById(`${idOfElem}-header`).classList.add('hidden');
+    let cnt = 1;
     document
       .getElementById(`${containerName}-${idOfContainer}`)
       .querySelectorAll('.card')
       .forEach((card) => {
-        card.classList.add('shake');
+        cnt += 1;
+        if (cnt % 2 === 0) {
+          card.classList.add('shake');
+        }
+        if (cnt % 2 === 1) {
+          card.classList.add('shake-reverse');
+        }
       });
   },
 
