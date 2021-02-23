@@ -109,6 +109,12 @@ export const CardContainerController = {
       if (window.event.keyCode === 13 && !modalOfAddingContainer.classList.contains('hidden')) {
         confirmButtonElem.click();
       }
+
+      document.querySelectorAll('.add-card-box').forEach((elem) => {
+        if (window.event.keyCode === 13 && !elem.classList.contains('hidden')) {
+          elem.querySelector('.confirm-button-add').click();
+        }
+      });
     });
   },
 
@@ -356,32 +362,38 @@ export const CardContainerController = {
     const { filterOfCardElem } = CardContainerController;
 
     filterOfCardElem.addEventListener('input', () => {
-      const valueOfFilter = filterOfCardElem.value;
+      const fliterCard = setTimeout(() => {
+        const valueOfFilter = filterOfCardElem.value;
 
-      cardContainers.forEach((cardContainer) => {
-        cardContainer.cards.forEach((card) => {
-          if (card.header.includes(valueOfFilter)) {
-            if (
-              document
-                .querySelector(`#card-total-box-${cardContainer.id}-${card.id}`)
-                .classList.contains('hidden')
-            ) {
-              document
-                .querySelector(`#card-total-box-${cardContainer.id}-${card.id}`)
-                .classList.remove('hidden');
+        cardContainers.forEach((cardContainer) => {
+          cardContainer.cards.forEach((card) => {
+            if (card.header.includes(valueOfFilter)) {
+              if (
+                document
+                  .querySelector(`#card-total-box-${cardContainer.id}-${card.id}`)
+                  .classList.contains('hidden')
+              ) {
+                document
+                  .querySelector(`#card-total-box-${cardContainer.id}-${card.id}`)
+                  .classList.remove('hidden');
+              }
+            } else {
+              if (
+                !document
+                  .querySelector(`#card-total-box-${cardContainer.id}-${card.id}`)
+                  .classList.contains('hidden')
+              ) {
+                document
+                  .querySelector(`#card-total-box-${cardContainer.id}-${card.id}`)
+                  .classList.add('hidden');
+              }
             }
-          } else {
-            if (
-              !document
-                .querySelector(`#card-total-box-${cardContainer.id}-${card.id}`)
-                .classList.contains('hidden')
-            ) {
-              document
-                .querySelector(`#card-total-box-${cardContainer.id}-${card.id}`)
-                .classList.add('hidden');
-            }
-          }
+          });
         });
+      }, 400);
+
+      filterOfCardElem.addEventListener('input', () => {
+        clearTimeout(fliterCard);
       });
     });
   },

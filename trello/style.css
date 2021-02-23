@@ -796,12 +796,22 @@ h1 {
 
 .trans-down {
   transition: all 150ms ease 0s;
-  transform: translate3d(0, 95px, 0);
+  transform: translate3d(0, 98px, 0);
 }
 
 .trans-up {
   transition: all 150ms ease 0s;
-  transform: translate3d(0, -95px, 0);
+  transform: translate3d(0, -98px, 0);
+}
+
+.trans-right {
+  transition: all 150ms ease 0s;
+  transform: translate3d(390px, 0, 0);
+}
+
+.trans-left {
+  transition: all 150ms ease 0s;
+  transform: translate3d(-390px, 0, 0);
 }
 
 .down {

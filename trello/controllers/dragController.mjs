@@ -356,7 +356,6 @@ export const dragController = {
 
             dragController.draggedData[2] = currentCardIndex;
 
-            console.log('컨테이너 밟음~', dragController.draggedData[2]);
             event.stopPropagation();
             event.preventDefault();
           }, 10);
@@ -415,8 +414,6 @@ export const dragController = {
           dragController.draggedData[2][0] === indexOfCardOfEnteredCard[0] &&
           dragController.draggedData[2][1] + 1 === indexOfCardOfEnteredCard[1]
         ) {
-          console.log(dragController.draggedData[2]);
-          console.log('가상의 바로 아래 탑 박스');
           return;
         }
 
@@ -441,7 +438,6 @@ export const dragController = {
           draggedCardElem.nextElementSibling !== null &&
           draggedCardElem.nextElementSibling.id === dropTargetCardElem.id
         ) {
-          console.log('걸렸당 ㅎㅎ');
           return;
         }
 
@@ -456,8 +452,6 @@ export const dragController = {
           );
 
           dragController.draggedData[2] = currrentIndexOfVirtualCard;
-
-          console.log('위로 들어감~', dragController.draggedData[2]);
 
           event.preventDefault();
         }, 160);
@@ -503,7 +497,6 @@ export const dragController = {
           dragController.draggedData[2][0] === indexOfCardOfEnteredCard[0] &&
           dragController.draggedData[2][1] - 1 === indexOfCardOfEnteredCard[1]
         ) {
-          console.log('가상의 바로 위 아래박스');
           return;
         }
 
@@ -528,8 +521,6 @@ export const dragController = {
           );
 
           dragController.draggedData[2] = currrentIndexOfVirtualCard;
-
-          console.log('아래로 들어감~', dragController.draggedData[2]);
 
           event.preventDefault();
         }, 160);

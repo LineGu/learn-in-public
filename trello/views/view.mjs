@@ -44,6 +44,9 @@ export const cardContainersView = {
   },
 
   openModalOfAddingCard(idOfElem) {
+    document.querySelectorAll('.add-card-box').forEach((elem) => {
+      elem.classList.add('hidden');
+    });
     document.getElementById(`${idOfElem}`).classList.remove('hidden');
   },
 
@@ -109,7 +112,22 @@ export const cardContainersView = {
     );
     const dropTargetElem = document.getElementById(`${nameOfTarget}-${idOfDropTarget}`);
 
-    dropTargetElem.after(draggedContainerElem);
+    if (
+      draggedContainerElem.previousElementSibling !== null &&
+      draggedContainerElem.previousElementSibling.id === dropTargetElem.id
+    ) {
+      draggedContainerElem.classList.add('virtual');
+      return;
+    }
+
+    draggedContainerElem.classList.add('trans-right');
+    dropTargetElem.classList.add('trans-left');
+
+    setTimeout(() => {
+      dropTargetElem.after(draggedContainerElem);
+      draggedContainerElem.classList.remove('trans-right');
+      dropTargetElem.classList.remove('trans-left');
+    }, 155);
 
     draggedContainerElem.classList.add('virtual');
   },
@@ -127,7 +145,19 @@ export const cardContainersView = {
     );
     const dropTargetElem = document.getElementById(`${nameOfTarget}-${idOfDropTarget}`);
 
-    dropTargetElem.before(draggedContainerElem);
+    if (draggedContainerElem.nextElementSibling.id === dropTargetElem.id) {
+      draggedContainerElem.classList.add('virtual');
+      return;
+    }
+
+    draggedContainerElem.classList.add('trans-left');
+    dropTargetElem.classList.add('trans-right');
+
+    setTimeout(() => {
+      dropTargetElem.before(draggedContainerElem);
+      draggedContainerElem.classList.remove('trans-left');
+      dropTargetElem.classList.remove('trans-right');
+    }, 155);
 
     draggedContainerElem.classList.add('virtual');
   },
@@ -193,7 +223,9 @@ export const cardContainersView = {
 
     if (virtualCardIndex - 1 === indexOfVirtualCardToGo) {
       dropTargetCardElem.classList.add('trans-down');
-      draggedCardElem.classList.add('trans-up');
+      if (draggedCardElem.previousElementSibling !== null) {
+        draggedCardElem.classList.add('trans-up');
+      }
       setTimeout(() => {
         dropTargetCardElem.before(draggedCardElem);
         dragController.draggedData[2] = [targetConainerIndex, indexOfVirtualCardToGo];
@@ -211,7 +243,10 @@ export const cardContainersView = {
       let previousSibling = dropTargetCardElem.previousElementSibling;
 
       while (previousSibling != null) {
-        previousSibling.classList.add('trans-up');
+        if (previousSibling.previousElementSibling !== null) {
+          previousSibling.classList.add('trans-up');
+        }
+
         previousSibling = previousSibling.previousElementSibling;
       }
       draggedCardElem.classList.remove('trans-up');
@@ -239,7 +274,9 @@ export const cardContainersView = {
       let previousSibling = dropTargetCardElem.previousElementSibling;
 
       while (previousSibling != null) {
-        previousSibling.classList.add('trans-up');
+        if (previousSibling.previousElementSibling !== null) {
+          previousSibling.classList.add('trans-up');
+        }
         previousSibling = previousSibling.previousElementSibling;
       }
       draggedCardElem.remove('trans-up');
@@ -333,7 +370,10 @@ export const cardContainersView = {
       virtualCardIndex > targetCardIndex[1] ? targetCardIndex[1] + 1 : targetCardIndex[1];
 
     if (virtualCardIndex + 1 === targetCardIndex[1]) {
-      dropTargetCardElem.classList.add('trans-up');
+      if (dropTargetCardElem.previousElementSibling !== null) {
+        dropTargetCardElem.classList.add('trans-up');
+      }
+
       draggedCardElem.classList.add('trans-down');
       setTimeout(() => {
         dropTargetCardElem.after(draggedCardElem);
@@ -352,7 +392,10 @@ export const cardContainersView = {
       let siblingElem = draggedCardElem.nextElementSibling;
       let cnt = indexOfVirtualCardToGo - virtualCardIndex - 1;
       while (cnt > 0 && siblingElem !== null) {
-        siblingElem.classList.add('trans-up');
+        if (siblingElem.previousElementSibling !== null) {
+          siblingElem.classList.add('trans-up');
+        }
+
         siblingElem = siblingElem.nextElementSibling;
         cnt -= 1;
       }
