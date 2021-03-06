@@ -3,6 +3,7 @@ import { cardContainerModel, cardModel } from '../models/model.mjs';
 import { cardContainersView } from '../views/view.mjs';
 import { cardContainers } from '../models/card_data.mjs';
 import { dragController } from './dragController.mjs';
+import { loginController } from './loginController.mjs';
 
 export const CardContainerController = {
   init() {
@@ -51,6 +52,7 @@ export const CardContainerController = {
 
     CardContainerController.menuModalElem = document.querySelector('.menu-modal');
     CardContainerController.menuButtonElem = document.querySelector('.menu-img');
+    CardContainerController.logOutButtonElem = document.querySelector('.log-out');
 
     dragController.init();
 
@@ -85,6 +87,7 @@ export const CardContainerController = {
     CardContainerController.attachEnterKeyHandler();
     CardContainerController.attachOpenMenuModalHandler();
     CardContainerController.attachCloseMenuModalHandler();
+    CardContainerController.attachLogOutHandler();
   },
 
   attachEventHandler(data) {
@@ -105,6 +108,13 @@ export const CardContainerController = {
     CardContainerController.attachConfirmEditForCard();
     CardContainerController.attachDeleteCardForImgHandler();
     CardContainerController.attachEnterKeyHandler();
+  },
+
+  attachLogOutHandler() {
+    const { logOutButtonElem } = CardContainerController;
+    logOutButtonElem.addEventListener('click', (event) => {
+      loginController.logOut();
+    });
   },
 
   attachEnterKeyHandler() {

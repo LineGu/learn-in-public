@@ -1,0 +1,347 @@
+@import url('https://fonts.googleapis.com/css?family=Noto+Sans+KR&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Noto Sans KR', 'sans-serif';
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: rgb(163, 163, 163);
+  background-size: cover;
+}
+
+body::before {
+  content: '';
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+.login-form {
+  position: relative;
+  z-index: 2;
+}
+
+.login-form h1 {
+  font-size: 50px;
+  color: #fff;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.login-form h1::selection {
+  background-color: transparent;
+}
+
+.int-area {
+  width: 400px;
+  position: relative;
+  margin-top: 20px;
+}
+.int-area:first-child {
+  margin-top: 0;
+}
+.int-area input {
+  width: 100%;
+  padding: 20px 10px 10px;
+  background-color: transparent;
+  border: none;
+  border-bottom: 1px solid #999;
+  font-size: 18px;
+  color: #fff;
+  outline: none;
+}
+
+.int-area label {
+  position: absolute;
+  left: 10px;
+  top: 15px;
+  font-size: 18px;
+  color: #999;
+  transition: top 0.5s ease;
+  cursor: text;
+}
+
+.int-area input:focus + label,
+.int-area input:valid + label {
+  top: 0;
+  font-size: 13px;
+  color: #166cea;
+}
+
+.btn-area {
+  margin-top: 30px;
+}
+
+.btn-area button {
+  width: 100%;
+  height: 43px;
+  background: #166cea;
+  color: #fff;
+  font-size: 20px;
+  border: none;
+  border-radius: 15px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.btn-area > #google {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  background-color: #fff;
+  color: #566475;
+}
+
+.btn-area > #google:hover {
+  background-color: rgb(218, 216, 216);
+}
+
+.btn-area > #google > img {
+  width: 1.3em;
+  height: 1.3em;
+  margin-right: 20px;
+}
+
+.btn-area > #kakao {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  background-color: #fee500;
+  color: #000000;
+  opacity: 85%;
+  font-size: 18px;
+}
+
+.btn-area > #kakao:hover {
+  background-color: #e6ca4e;
+}
+
+.btn-area > #kakao > img {
+  width: 1.3em;
+  height: 1.3em;
+  margin-right: 20px;
+}
+
+.btn-area button:hover {
+  background: #0e53bb;
+}
+
+.caption {
+  margin-left: 50px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  text-align: center;
+}
+
+.caption button {
+  margin-top: -5px;
+  margin-right: 55px;
+  font-size: 15px;
+  height: 10px;
+  background-color: transparent;
+  color: #fff;
+  text-decoration: none;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.caption button:hover {
+  color: rgb(128, 180, 223);
+  text-decoration: underline;
+}
+
+.caption a {
+  margin-left: -10px;
+  margin-right: 55px;
+  font-size: 15px;
+  color: #fff;
+  text-decoration: none;
+}
+
+.caption a:hover {
+  color: rgb(128, 180, 223);
+  text-decoration: underline;
+}
+
+.find-id-modal,
+.find-pw-modal {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 5;
+  width: 550px;
+  height: 500px;
+  background-color: rgb(214, 224, 226);
+  border-radius: 0.4em;
+
+  animation-name: left;
+  animation-duration: 0.2s;
+  animation-iteration-count: initial;
+  animation-delay: 0s;
+  animation-timing-function: linear;
+}
+
+.signup-modal {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 5;
+  width: 100%;
+  height: 100%;
+  background-color: rgb(214, 224, 226);
+
+  animation-name: up;
+  animation-duration: 0.2s;
+  animation-iteration-count: initial;
+  animation-delay: 0s;
+  animation-timing-function: linear;
+}
+.signup-container,
+.find-id-container,
+.find-pw-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.signup-container > h1,
+.find-id-container > h1,
+.find-pw-container > h1 {
+  font-weight: 700;
+  font-size: 3em;
+  margin-bottom: 0.3em;
+  letter-spacing: 0.1em;
+}
+.signup-container > p,
+.find-id-container > p,
+.find-pw-container > p {
+  color: #566475;
+  margin-bottom: 1em;
+}
+
+.signup-container > .int-area input,
+.find-id-container > .int-area input,
+.find-pw-container > .int-area input {
+  color: black;
+  margin-top: 5px;
+  padding-bottom: 3px;
+}
+
+.signup-container > .int-area > img,
+.find-id-container > .int-area > img,
+.find-pw-container > .int-area > img {
+  width: 1.7em;
+  height: 1.7em;
+  position: absolute;
+  margin: 17px 0 0 -35px;
+}
+.signup-container > .int-area input:focus,
+.signup-container > .int-area input:valid,
+.find-id-container > .int-area input:focus,
+.find-id-container > .int-area input:valid,
+.find-pw-container > .int-area input:focus,
+.find-pw-container > .int-area input:valid {
+  border-bottom: 2px solid #166cea;
+}
+
+.signup-container > .int-area > p,
+.find-id-container > .int-area > p,
+.find-pw-container > .int-area > p {
+  position: absolute;
+  color: red;
+  font-size: 0.4em;
+}
+
+.signup-container > .int-area > .available-id,
+.signup-container > .int-area > .repeat-pw,
+.signup-container > .int-area > .valid-phone,
+.find-id-container > .int-area > .available-id,
+.find-id-container > .int-area > .repeat-pw,
+.find-id-container > .int-area > .valid-phone,
+.find-pw-container > .int-area > .available-id,
+.find-pw-container > .int-area > .repeat-pw,
+.find-pw-container > .int-area > .valid-phone {
+  color: #4caf50;
+}
+
+.signup-container > .int-area > .phone-explan,
+.find-id-container > .int-area > .phone-explan,
+.find-pw-container > .int-area > .phone-explan {
+  color: #000000;
+}
+
+/* Set a style for all buttons */
+.clearfix > .signupbtn,
+.clearfix > .find-id-btn,
+.clearfix > .find-pw-btn {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  cursor: pointer;
+  width: 250px;
+  height: 40px;
+  margin: 30px 0 0;
+  opacity: 0.6;
+  border-radius: 0.4em;
+}
+
+.clearfix > .cancelbtn {
+  background-color: #e43c3c;
+  color: white;
+  border: none;
+  cursor: pointer;
+  width: 150px;
+  height: 40px;
+  margin: 30px 0 0;
+  opacity: 0.6;
+  border-radius: 0.4em;
+}
+
+.clearfix > button:hover {
+  opacity: 1;
+}
+
+.hidden {
+  display: none;
+  pointer-events: none;
+}
+@keyframes left {
+  from {
+    transform: translate3d(100%, 0, 0);
+  }
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes up {
+  from {
+    transform: translate3d(0, 100%, 0);
+  }
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}

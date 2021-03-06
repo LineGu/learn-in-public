@@ -10,9 +10,14 @@ import { cardContainerModel, cardModel } from '../models/model.mjs';
 
 import { dragController } from '../controllers/dragController.mjs';
 
+import { currentUser } from '../models/user_data.mjs';
+
+import { loginController } from '../controllers/loginController.mjs';
+
 export const cardContainersView = {
   render(cardContainers) {
     const cardContainerElem = document.querySelector('.main-container-bottom');
+    const userNameElem = document.querySelector('#user-name');
 
     cardContainerElem.innerHTML = cardContainers
       .map((cardContainer) => {
@@ -25,6 +30,7 @@ export const cardContainersView = {
       .join('');
 
     cardContainerElem.insertAdjacentHTML('beforeend', createAddingCardContainerElem());
+    userNameElem.innerText = currentUser.name;
   },
 
   openModalForContainer() {
@@ -60,9 +66,8 @@ export const cardContainersView = {
     const containerName = cardContainers[indexOfContainer].name;
 
     cardContainers[indexOfContainer].cards.forEach((card) => {
-      console.log(document.getElementById(`edit-mode-bottom-${idOfContainer}-${card.id}`));
       document
-        .getElementById(`edit-mode-bottom-${idOfContainer}-${card.id}`)
+        .getElementById(`edit-mode-bottom-box-${idOfContainer}-${card.id}`)
         .classList.remove('hidden');
     });
     document.getElementById(`${idOfElem}-top`).classList.remove('hidden');
@@ -429,6 +434,10 @@ export const cardContainersView = {
     document.querySelectorAll('.trans-up').forEach((elem) => {
       elem.classList.remove('.trans-up');
     });
+  },
+
+  loadIndexHTMLAfterLogin() {
+    window.location.href = 'index.html';
   },
 
   resetValue(elem) {

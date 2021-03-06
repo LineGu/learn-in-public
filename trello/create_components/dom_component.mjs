@@ -62,11 +62,14 @@ export const createCardElem = (card, container) => {
       </div>
     </section>
     <div class="card" draggable="false" id="card-${container.id}-${card.id}">
-      <img class="remove-card remove-${container.id}-${card.id} hidden" id="edit-mode-bottom-${container.id}-${card.id}" src="./assets/remove.png" alt="카드 제거 이미지">
       <section class="card-header">
         <img src="./assets/card.png" alt="카드 사진" draggable="false" />
         <strong id="card-header-${card.id}">${card.header}</strong>
         <div class="more-img-card" id="more-${container.id}-${card.id}">...</div>
+      </section>
+
+      <section class="remove-box hidden" id="edit-mode-bottom-box-${container.id}-${card.id}">
+        <img class="remove-card remove-${container.id}-${card.id}" id="edit-mode-bottom-${container.id}-${card.id}" src="./assets/trash.png" alt="카드 제거 이미지">
       </section>
 
       <section class="edit-modal-box-card hidden" id="edit-modal-${container.id}-${card.id}">

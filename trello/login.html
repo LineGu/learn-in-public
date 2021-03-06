@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="google-signin-client_id"
+      content="754093745043-1h4l8j77bhelph1u0c2vlsd6tnk8vggk.apps.googleusercontent.com"
+    />
+
+    <title>login page</title>
+    <link rel="stylesheet" href="./loginStyle.css" />
+  </head>
+  <body>
+    <section class="find-id-modal hidden">
+      <form class="find-id-form">
+        <div class="find-id-container">
+          <h1>아이디 찾기</h1>
+          <div class="int-area">
+            <img src="./assets/user.png" />
+            <input type="text" name="find-id-name" id="find-id-name" autocomplete="off" required />
+            <label for="find-id-name">NAME</label>
+          </div>
+
+          <div class="int-area">
+            <img src="./assets/smartphone.png" />
+            <input
+              type="tel"
+              name="find-id-phone-number"
+              id="find-id-phone-number"
+              autocomplete="off"
+              required
+            />
+            <label for="find-id-phone-number">PHONE NUMBER</label>
+          </div>
+          <div class="clearfix">
+            <button type="submit" class="find-id-btn">찾기</button>
+            <button type="button" class="cancelbtn">취소</button>
+          </div>
+        </div>
+      </form>
+    </section>
+
+    <section class="find-pw-modal hidden">
+      <form class="find-pw-form">
+        <div class="find-pw-container">
+          <h1>비밀번호 찾기</h1>
+          <div class="int-area">
+            <img src="./assets/user.png" />
+            <input type="text" name="find-pw-name" id="find-pw-name" autocomplete="off" required />
+            <label for="find-pw-name">NAME</label>
+          </div>
+
+          <div class="int-area">
+            <img src="./assets/message.png" />
+            <input type="text" name="find-pw-id" id="find-pw-id" autocomplete="off" required />
+            <label for="find-pw-id">E-MAIL</label>
+          </div>
+
+          <div class="int-area">
+            <img src="./assets/smartphone.png" />
+            <input
+              type="tel"
+              name="find-pw-phone-number"
+              id="find-pw-phone-number"
+              autocomplete="off"
+              required
+            />
+            <label for="find-pw-phone-number">PHONE NUMBER</label>
+          </div>
+          <div class="clearfix">
+            <button type="submit" class="find-pw-btn">찾기</button>
+            <button type="button" class="cancelbtn">취소</button>
+          </div>
+        </div>
+      </form>
+    </section>
+
+    <section class="signup-modal hidden">
+      <form class="signup-form">
+        <div class="signup-container">
+          <h1>회원가입</h1>
+          <p>KANBAN BOARD 회원이 되기 위해 정보를 입력해주세요.</p>
+          <div class="int-area">
+            <img src="./assets/user.png" />
+            <input type="text" name="name" id="name" autocomplete="off" required />
+            <label for="name">NAME</label>
+          </div>
+
+          <div class="int-area">
+            <img src="./assets/message.png" />
+            <input type="text" name="signup-id" id="signup-id" autocomplete="off" required />
+            <label for="signup-id">E-MAIL</label>
+            <p class="unavailable-id hidden">사용할 수 없는 아이디입니다.</p>
+            <p class="invalid-id hidden">올바른 이메일 형식을 입력해주세요.</p>
+            <p class="available-id green hidden">사용할 수 있는 아이디입니다.</p>
+          </div>
+
+          <div class="int-area">
+            <img src="./assets/padlock.png" />
+            <input type="password" name="signup-pw" id="signup-pw" autocomplete="off" required />
+            <label for="signup-pw">PASSWORD</label>
+          </div>
+
+          <div class="int-area">
+            <input type="password" name="repeat-pw" id="repeat-pw" autocomplete="off" required />
+            <label for="repeat-pw">REPEAT PASSWORD</label>
+            <p class="invalid-repeat-pw hidden">비밀번호가 일치하지 않습니다.</p>
+            <p class="repeat-pw hidden">일치합니다!</p>
+          </div>
+
+          <div class="int-area">
+            <img src="./assets/smartphone.png" />
+            <input type="tel" name="phone-number" id="phone-number" autocomplete="off" required />
+            <label for="phone-number">PHONE NUMBER</label>
+            <p class="invalid-phone hidden">올바른 형식으로 입력하세요.</p>
+            <p class="phone-explan hidden">- 를 제외하고 입력하세요.</p>
+            <p class="valid-phone hidden">올바른 번호입니다!</p>
+          </div>
+
+          <div class="clearfix">
+            <button type="submit" class="signupbtn">가입</button>
+            <button type="button" class="cancelbtn">취소</button>
+          </div>
+        </div>
+      </form>
+    </section>
+    <section class="login-form">
+      <h1>KANBAN Board</h1>
+      <form class="login-button">
+        <div class="int-area">
+          <input type="text" name="id" id="id" autocomplete="off" required />
+          <label for="id">E-MAIL</label>
+        </div>
+        <div class="int-area">
+          <input type="password" name="pw" id="pw" autocomplete="off" required />
+          <label for="pw">PASSWORD</label>
+        </div>
+        <div class="btn-area">
+          <button type="submit" value="login" id="login">LOGIN</button>
+          <button type="submit" value="login" id="google">
+            <img src="./assets/google_log.png" alt="google logo" />Sign in with Google
+          </button>
+          <button type="submit" value="login" id="kakao">
+            <img src="./assets/kakao.png" alt="kakao logo" />카카오 아이디로 로그인
+          </button>
+        </div>
+      </form>
+      <div class="caption">
+        <button class="sign-up-button">회원 가입</button>
+        <button class="find-id-button">아이디 찾기</button>
+        <button class="find-pw-button">비밀번호 찾기</button>
+      </div>
+    </section>
+    <script type="module" src="./loginMain.js" defer></script>
+    <script type="module" src="./googleLogin.js"></script>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+    <script type="module" src="./kakaoLogin.js"></script>
+  </body>
+</html>

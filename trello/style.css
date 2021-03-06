@@ -23,9 +23,11 @@ h1 {
 
 .main-container-top {
   display: flex;
-  justify-content: start;
+  justify-content: space-between;
   background-color: #4d6380;
+  width: 100%;
   height: 3em;
+  overflow-x: scroll;
 }
 
 .main-container-top-left {
@@ -57,7 +59,7 @@ h1 {
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin: 0 0 0 42%;
+  margin: 0 3% 0 0;
 }
 
 .find-img {
@@ -123,6 +125,7 @@ h1 {
   align-items: flex-start;
   padding: 0;
   margin: 0;
+  background-color: #f8fafc;
   border-bottom: 1px solid #e6e8eb;
 }
 
@@ -159,7 +162,8 @@ h1 {
 .container-name-modify > p {
   padding: 13px 0 0 5px;
   font-size: 1em;
-  font-weight: 600;
+  font-weight: 800;
+  letter-spacing: 0.08em;
 }
 
 .container-name-modify > input {
@@ -168,27 +172,34 @@ h1 {
   width: 220px;
   height: 21px;
   padding: 5px;
-  border: 1px solid #bbbcbe;
+  border: 2px solid #bbbcbe;
   border-right: none;
+  border-radius: 0.4em;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  background-color: #cbd7e6;
 }
 .container-name-modify > input:focus {
   outline: none;
 }
 .container-name-modify > button {
   background-color: #ffffff;
-  border: 1px solid #bbbcbe;
+  border: 2px solid #bbbcbe;
   border-left: none;
   outline: none;
-  height: 33px;
+  height: 35px;
   margin-top: 12px;
   padding-right: 10px;
   font-size: 0.85em;
   color: #77797a;
+  background-color: #cbd7e6;
+  border-top-right-radius: 0.4em;
+  border-bottom-right-radius: 0.4em;
 }
 
 .container-name-modify > button:hover {
   font-size: 0.95em;
-  font-weight: 500;
+  font-weight: 700;
   color: #5f5fd8;
 }
 
@@ -228,7 +239,7 @@ h1 {
   overflow: hidden;
   overflow-y: scroll;
   flex: 0 0 345px;
-  height: 40em;
+  height: 45em;
   flex-direction: column;
   background-color: #f6f8fa;
   border: 1px solid #e6e8eb;
@@ -238,12 +249,6 @@ h1 {
 
 .card-box {
   pointer-events: all;
-}
-
-.card-box-header > p::selection,
-.card-box-header > strong::selection,
-.card-box-header > div::selection {
-  background-color: transparent;
 }
 
 .card {
@@ -566,9 +571,6 @@ h1 {
   box-shadow: 0 0 1px 3px #bfd0f0;
 }
 
-.add-card-box > .confirm-card {
-}
-
 .add-card-box > .confirm-card > [class^='confirm-button'] {
   margin: 7px 0 7px 0;
   width: 11em;
@@ -696,9 +698,6 @@ h1 {
 .edit-card-box > .input-edit-card > .edit-card-body:focus {
   border: 1px solid #2a66cf;
   box-shadow: 0 0 1px 3px #bfd0f0;
-}
-
-.edit-card-box > .confirm-card {
 }
 
 .edit-card-box > .confirm-card > [class^='confirm-button'] {
@@ -870,13 +869,12 @@ h1 {
   }
 }
 
-@keyframes zoomIn {
+@keyframes left {
   0% {
-    opacity: 0;
-    transform: scale3d(0.3, 0.3, 0.3);
+    transform: translate3d(100%, 0, 0);
   }
   50% {
-    opacity: 1;
+    transform: translate3d(0, 0, 0);
   }
 }
 
@@ -938,12 +936,20 @@ h1 {
   opacity: 40%;
 }
 
+.shake-reverse > .remove-box {
+  opacity: 100%;
+}
+
 .shake > section {
   opacity: 40%;
 }
 
 .shake > div {
   opacity: 40%;
+}
+
+.shake > .remove-box {
+  opacity: 100%;
 }
 
 .bigger-top {
@@ -971,24 +977,21 @@ h1 {
   animation-fill-mode: none;
 }
 
-.stop-event {
-  pointer-events: none;
-}
-
-.card > .remove-card {
+.remove-card {
   opacity: 100%;
   position: absolute;
-  width: 20px;
-  height: 20px;
-  z-index: 1000;
-  margin: -6px 0 0 -6px;
+  width: 25px;
+  height: 25px;
+  z-index: 2;
+  margin: 0 0 0 0;
+
   border-radius: 50%;
 }
 
-.card > .remove-card:hover {
+.remove-card:hover {
   cursor: pointer;
-  width: 25px;
-  height: 25px;
+  width: 28px;
+  height: 28px;
 }
 
 .menu-box {
@@ -1030,18 +1033,24 @@ h1 {
 
 .menu-modal {
   position: absolute;
-  margin: 30% 0 0 5%;
+  margin: 5% 0 0 86%;
   background-color: #61666e;
   border-radius: 0.7em;
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
   border: 3px solid #566475;
-  width: 13.8%;
-  height: 95%;
-  box-shadow: 1px 1px 20px #6d92be;
+  width: 13.6%;
+  height: 80%;
+  box-shadow: 0 0 2px 2px #566475;
   color: #ffffff;
-  z-index: 100;
+  z-index: 5;
   float: right;
+
+  animation-name: left;
+  animation-duration: 0.8s;
+  animation-iteration-count: initial;
+  animation-delay: 0s;
+  animation-timing-function: ease-out;
 }
 
 .menu-modal > .top {
@@ -1053,6 +1062,7 @@ h1 {
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
   border-bottom: 1px solid #e6e8eb;
+  cursor: pointer;
 }
 
 .menu-modal > .delete-container {
@@ -1070,6 +1080,27 @@ h1 {
 .menu-modal > .delete-container:hover {
   background-color: royalblue;
   cursor: pointer;
+}
+
+.remove-box {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(204, 198, 198) ff;
+  width: 9%;
+  height: 100%;
+  margin: -9.4% 0 0 91%;
+  border: 1px solid #e6e8eb;
+  border-radius: 0.4em;
+  border-bottom-left-radius: 0;
+  border-top-left-radius: 0;
+  z-index: 1;
+}
+
+.remove-box:hover {
+  background-color: #fdbaba;
+  cursor: auto;
 }
 
 .hidden {

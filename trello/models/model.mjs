@@ -7,6 +7,7 @@ import {
 } from '../create_components/card_component.mjs';
 
 import { dragController } from '../controllers/dragController.mjs';
+import { DBcontroller } from './DBcontroller.mjs';
 
 export const cardContainerModel = {
   findContainerIndexById(idOfContainer) {
@@ -33,9 +34,14 @@ export const cardContainerModel = {
     Observation.notify(cardContainers);
   },
 
-  deleteCardContainer(idOfDeleteContainer) {
+  async deleteCardContainer(idOfDeleteContainer) {
     const indexOfDeleteContainer = cardContainerModel.findContainerIndexById(idOfDeleteContainer);
     cardContainers.splice(indexOfDeleteContainer, 1);
+    const resultOfDelete = await DBcontroller.deleteContainer(idOfDeleteContainer);
+    if (resultOfDelete !== 'SUCCESS') {
+      alert('삭제에 문제가 생겼습니다.');
+      return;
+    }
     Observation.notify(cardContainers);
   },
 
