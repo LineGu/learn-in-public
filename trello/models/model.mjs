@@ -7,7 +7,7 @@ import {
 } from '../create_components/card_component.mjs';
 
 import { dragController } from '../controllers/dragController.mjs';
-import { DBcontroller } from './DBcontroller.mjs';
+import { DBcontroller } from '../controllers/DBcontroller.mjs';
 
 export const cardContainerModel = {
   findContainerIndexById(idOfContainer) {
@@ -26,30 +26,29 @@ export const cardContainerModel = {
     return indexOfContainer;
   },
 
-  addCardContainer(name) {
+  async addCardContainer(name) {
     currentUser.maxContainerId += 1;
-    const newCardContainer = createCardContainerObject(name, currentUser.maxContainerId);
+    const indexOfNewContainer = cardContainers.length;
+    const idOfNewContainer = currentUser.maxContainerId;
+    const newCardContainer = createCardContainerObject(name, idOfNewContainer);
     cardContainers.push(newCardContainer);
-
+    await DBcontroller.addContainer(idOfNewContainer, name, indexOfNewContainer);
+    await DBcontroller.updateMaxContainerId(idOfNewContainer);
     Observation.notify(cardContainers);
   },
 
   async deleteCardContainer(idOfDeleteContainer) {
     const indexOfDeleteContainer = cardContainerModel.findContainerIndexById(idOfDeleteContainer);
     cardContainers.splice(indexOfDeleteContainer, 1);
-    const resultOfDelete = await DBcontroller.deleteContainer(idOfDeleteContainer);
-    if (resultOfDelete !== 'SUCCESS') {
-      alert('삭제에 문제가 생겼습니다.');
-      return;
-    }
+    await DBcontroller.deleteContainer(idOfDeleteContainer);
     Observation.notify(cardContainers);
   },
 
-  editContainerName(idOfEditContainer, editedName) {
+  async editContainerName(idOfEditContainer, editedName) {
     const indexOfEditContainer = cardContainerModel.findContainerIndexById(idOfEditContainer);
     const editContainer = cardContainers[indexOfEditContainer];
-
     editContainer.name = editedName;
+    await DBcontroller.updateContainer(idOfEditContainer, editedName);
     Observation.notify(cardContainers);
   },
 
@@ -132,7 +131,7 @@ export const cardModel = {
     return [indexOfContainer, indexOfCard];
   },
 
-  addCard(idOfContainer, header, body) {
+  async addCard(idOfContainer, header, body) {
     currentUser.maxCardId += 1;
 
     const indexOfContainer = cardContainerModel.findContainerIndexById(idOfContainer);
@@ -140,97 +139,115 @@ export const cardModel = {
 
     cardContainers[indexOfContainer].count += 1;
     cardContainers[indexOfContainer].cards.unshift(newCard);
+
+    const containerIdOfDB = await DBcontroller.findContainerIdOfDB(idOfContainer);
+    await DBcontroller.addCard(
+      idOfContainer,
+      currentUser.maxCardId,
+      containerIdOfDB,
+      header,
+      body,
+      currentUser.name,
+      0,
+    );
+    await DBcontroller.updateCount(idOfContainer, cardContainers[indexOfContainer].count);
+    await DBcontroller.updateMaxCardId(currentUser.maxCardId);
+
     Observation.notify(cardContainers);
   },
 
-  deleteCard(idOfDeleteContainer, idOfDeleteCard) {
+  async deleteCard(idOfDeleteContainer, idOfDeleteCard) {
+    await cardModel.deleteCardVirtual(idOfDeleteContainer, idOfDeleteCard);
+    Observation.notify(cardContainers);
+  },
+
+  async deleteCardVirtual(idOfDeleteContainer, idOfDeleteCard) {
     const indexOfDeleteContainer = cardContainerModel.findContainerIndexById(idOfDeleteContainer);
     const indexOfDeleteCard = cardModel.findCardIndexById(idOfDeleteContainer, idOfDeleteCard);
     cardContainers[indexOfDeleteContainer].cards.splice(indexOfDeleteCard, 1);
     cardContainers[indexOfDeleteContainer].count -= 1;
-    Observation.notify(cardContainers);
+    await DBcontroller.deleteCard(idOfDeleteContainer, idOfDeleteCard);
+    await DBcontroller.updateCount(
+      idOfDeleteContainer,
+      cardContainers[indexOfDeleteContainer].count,
+    );
   },
 
-  deleteCardVirtual(idOfDeleteContainer, idOfDeleteCard) {
-    const indexOfDeleteContainer = cardContainerModel.findContainerIndexById(idOfDeleteContainer);
-    const indexOfDeleteCard = cardModel.findCardIndexById(idOfDeleteContainer, idOfDeleteCard);
-    cardContainers[indexOfDeleteContainer].cards.splice(indexOfDeleteCard, 1);
-    cardContainers[indexOfDeleteContainer].count -= 1;
-  },
-
-  editCard(idOfEditContainer, idOfEditCard, title, body) {
+  async editCard(idOfEditContainer, idOfEditCard, title, body) {
     const indexOfEditContainer = cardContainerModel.findContainerIndexById(idOfEditContainer);
     const indexOfEditCard = cardModel.findCardIndexById(idOfEditContainer, idOfEditCard);
     const editCard = cardContainers[indexOfEditContainer].cards[indexOfEditCard];
 
     editCard.header = title;
     editCard.body = body;
+
+    await DBcontroller.updateCard(idOfEditContainer, idOfEditCard, title, body);
     Observation.notify(cardContainers);
   },
 
-  insertCard(idsOfElemToBeInserted, idsOfStandardElem) {
-    const indexsOfElemToBeInserted = [
-      cardContainerModel.findContainerIndexById(idsOfElemToBeInserted[0]),
-      cardModel.findCardIndexById(idsOfElemToBeInserted[0], idsOfElemToBeInserted[1]),
-    ];
+  // insertCard(idsOfElemToBeInserted, idsOfStandardElem) {
+  //   const indexsOfElemToBeInserted = [
+  //     cardContainerModel.findContainerIndexById(idsOfElemToBeInserted[0]),
+  //     cardModel.findCardIndexById(idsOfElemToBeInserted[0], idsOfElemToBeInserted[1]),
+  //   ];
 
-    const ElemToBeInserted =
-      cardContainers[indexsOfElemToBeInserted[0]].cards[indexsOfElemToBeInserted[1]];
+  //   const ElemToBeInserted =
+  //     cardContainers[indexsOfElemToBeInserted[0]].cards[indexsOfElemToBeInserted[1]];
 
-    cardContainers[indexsOfElemToBeInserted[0]].count -= 1;
-    cardContainers[indexsOfElemToBeInserted[0]].cards.splice([indexsOfElemToBeInserted[1]], 1);
+  //   cardContainers[indexsOfElemToBeInserted[0]].count -= 1;
+  //   cardContainers[indexsOfElemToBeInserted[0]].cards.splice([indexsOfElemToBeInserted[1]], 1);
 
-    const indexOfStandardElem = [
-      cardContainerModel.findContainerIndexById(idsOfStandardElem[0]),
-      cardModel.findCardIndexById(idsOfStandardElem[0], idsOfStandardElem[1]),
-    ];
+  //   const indexOfStandardElem = [
+  //     cardContainerModel.findContainerIndexById(idsOfStandardElem[0]),
+  //     cardModel.findCardIndexById(idsOfStandardElem[0], idsOfStandardElem[1]),
+  //   ];
 
-    cardContainers[indexOfStandardElem[0]].count += 1;
-    cardContainers[indexOfStandardElem[0]].cards.splice(
-      indexOfStandardElem[1],
-      0,
-      ElemToBeInserted,
-    );
+  //   cardContainers[indexOfStandardElem[0]].count += 1;
+  //   cardContainers[indexOfStandardElem[0]].cards.splice(
+  //     indexOfStandardElem[1],
+  //     0,
+  //     ElemToBeInserted,
+  //   );
 
-    Observation.notify(cardContainers);
-  },
+  //   Observation.notify(cardContainers);
+  // },
 
-  insertCardBeforeVirtual(originIndexsOfCard, virtualIndexsOfCard, idsOfCard) {
-    const cardForMoving = cardContainers[virtualIndexsOfCard[0]].cards[virtualIndexsOfCard[1]];
+  // insertCardBeforeVirtual(originIndexsOfCard, virtualIndexsOfCard, idsOfCard) {
+  //   const cardForMoving = cardContainers[virtualIndexsOfCard[0]].cards[virtualIndexsOfCard[1]];
 
-    cardContainers[virtualIndexsOfCard[0]].cards.splice(virtualIndexsOfCard[1], 0, cardForMoving);
-    cardContainers[virtualIndexsOfCard[0]].count += 1;
+  //   cardContainers[virtualIndexsOfCard[0]].cards.splice(virtualIndexsOfCard[1], 0, cardForMoving);
+  //   cardContainers[virtualIndexsOfCard[0]].count += 1;
 
-    const indexOfDeleteContainer = cardContainerModel.findContainerIndexById(idsOfCard[0]);
-    const indexOfDeleteCard = cardModel.findCardIndexById(idsOfCard[0], idsOfCard[1]);
-    cardContainers[indexOfDeleteContainer].cards.splice(indexOfDeleteCard, 1);
-    cardContainers[indexOfDeleteContainer].count -= 1;
-  },
+  //   const indexOfDeleteContainer = cardContainerModel.findContainerIndexById(idsOfCard[0]);
+  //   const indexOfDeleteCard = cardModel.findCardIndexById(idsOfCard[0], idsOfCard[1]);
+  //   cardContainers[indexOfDeleteContainer].cards.splice(indexOfDeleteCard, 1);
+  //   cardContainers[indexOfDeleteContainer].count -= 1;
+  // },
 
-  insertCardAfterVirtual(idsOfElemToBeInserted, idsOfStandardElem) {
-    const indexsOfElemToBeInserted = [
-      cardContainerModel.findContainerIndexById(idsOfElemToBeInserted[0]),
-      cardModel.findCardIndexById(idsOfElemToBeInserted[0], idsOfElemToBeInserted[1]),
-    ];
+  // insertCardAfterVirtual(idsOfElemToBeInserted, idsOfStandardElem) {
+  //   const indexsOfElemToBeInserted = [
+  //     cardContainerModel.findContainerIndexById(idsOfElemToBeInserted[0]),
+  //     cardModel.findCardIndexById(idsOfElemToBeInserted[0], idsOfElemToBeInserted[1]),
+  //   ];
 
-    const ElemToBeInserted =
-      cardContainers[indexsOfElemToBeInserted[0]].cards[indexsOfElemToBeInserted[1]];
+  //   const ElemToBeInserted =
+  //     cardContainers[indexsOfElemToBeInserted[0]].cards[indexsOfElemToBeInserted[1]];
 
-    cardContainers[indexsOfElemToBeInserted[0]].count -= 1;
-    cardContainers[indexsOfElemToBeInserted[0]].cards.splice([indexsOfElemToBeInserted[1]], 1);
+  //   cardContainers[indexsOfElemToBeInserted[0]].count -= 1;
+  //   cardContainers[indexsOfElemToBeInserted[0]].cards.splice([indexsOfElemToBeInserted[1]], 1);
 
-    const indexOfStandardElem = [
-      cardContainerModel.findContainerIndexById(idsOfStandardElem[0]),
-      cardModel.findCardIndexById(idsOfStandardElem[0], idsOfStandardElem[1]),
-    ];
+  //   const indexOfStandardElem = [
+  //     cardContainerModel.findContainerIndexById(idsOfStandardElem[0]),
+  //     cardModel.findCardIndexById(idsOfStandardElem[0], idsOfStandardElem[1]),
+  //   ];
 
-    cardContainers[indexOfStandardElem[0]].count += 1;
-    cardContainers[indexOfStandardElem[0]].cards.splice(
-      indexOfStandardElem[1] + 1,
-      0,
-      ElemToBeInserted,
-    );
-  },
+  //   cardContainers[indexOfStandardElem[0]].count += 1;
+  //   cardContainers[indexOfStandardElem[0]].cards.splice(
+  //     indexOfStandardElem[1] + 1,
+  //     0,
+  //     ElemToBeInserted,
+  //   );
+  // },
 
   getCards(indexOfContainer) {
     return cardContainers[indexOfContainer].cards;

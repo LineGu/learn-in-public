@@ -315,8 +315,8 @@ export const CardContainerController = {
           idOfContainerToDelete,
           idOfCardToDelete,
         );
-        cardContainers[indexOfDeleteContainer].count -= 1;
-        cardContainers[indexOfDeleteContainer].cards.splice(indexOfDeleteCard, 1);
+
+        cardModel.deleteCardVirtual(idOfContainerToDelete, idOfCardToDelete);
         parentElemToDelete.removeChild(elemToDelete);
       }),
     );

@@ -3,6 +3,7 @@ import { cardContainerModel, cardModel } from '../models/model.mjs';
 import { cardContainersView } from '../views/view.mjs';
 import { cardContainers } from '../models/card_data.mjs';
 import { CardContainerController } from './controller.mjs';
+import { DBcontroller } from './DBcontroller.mjs';
 
 export const dragController = {
   init() {
@@ -249,16 +250,29 @@ export const dragController = {
 
         event.preventDefault();
       });
-      containerToDragRightElem.addEventListener('drop', (event) => {
+      containerToDragRightElem.addEventListener('drop', async (event) => {
+        event.preventDefault();
+        event.stopPropagation();
         const virtualCardContainers = cardContainerModel.createCardContainerObjectVirtual();
         cardContainers.splice(0, cardContainers.length);
+        const idOfDraggedContainer = dragController.draggedData[0].split('-')[1];
+
+        const indexOfDraggedContainerStart = dragController.draggedData[1];
 
         virtualCardContainers.forEach((virtualCardContainer) => {
           cardContainers.push(virtualCardContainer);
         });
 
-        event.preventDefault();
-        event.stopPropagation();
+        const indexOfDraggedContainer = cardContainerModel.findContainerIndexById(
+          idOfDraggedContainer,
+        );
+
+        await DBcontroller.moveContainer(
+          idOfDraggedContainer,
+          indexOfDraggedContainerStart,
+          indexOfDraggedContainer,
+        );
+        console.log('오른쪽');
       });
     });
 
@@ -286,16 +300,30 @@ export const dragController = {
 
         event.preventDefault();
       });
-      containerToDragLeftElem.addEventListener('drop', (event) => {
+      containerToDragLeftElem.addEventListener('drop', async (event) => {
+        event.preventDefault();
+        event.stopPropagation();
         const virtualCardContainers = cardContainerModel.createCardContainerObjectVirtual();
         cardContainers.splice(0, cardContainers.length);
+
+        const idOfDraggedContainer = dragController.draggedData[0].split('-')[1];
+
+        const indexOfDraggedContainerStart = dragController.draggedData[1];
 
         virtualCardContainers.forEach((virtualCardContainer) => {
           cardContainers.push(virtualCardContainer);
         });
 
-        event.preventDefault();
-        event.stopPropagation();
+        const indexOfDraggedContainer = cardContainerModel.findContainerIndexById(
+          idOfDraggedContainer,
+        );
+
+        await DBcontroller.moveContainer(
+          idOfDraggedContainer,
+          indexOfDraggedContainerStart,
+          indexOfDraggedContainer,
+        );
+        console.log('왼쪽');
       });
     });
   },
@@ -375,16 +403,45 @@ export const dragController = {
         }
         event.stopPropagation();
       });
-      containerToDragElem.addEventListener('drop', (event) => {
+      containerToDragElem.addEventListener('drop', async (event) => {
+        event.preventDefault();
+        event.stopPropagation();
         const virtualCardContainers = cardContainerModel.createCardContainerObjectVirtual();
         cardContainers.splice(0, cardContainers.length);
+        if (dragController.draggedData[0].split('-')[0] === 'container') {
+          const idOfDraggedContainer = dragController.draggedData[0].split('-')[1];
+          const indexOfDraggedContainerStart = cardContainerModel.findContainerIndexByIdVirtual(
+            idOfDraggedContainer,
+          );
+
+          virtualCardContainers.forEach((virtualCardContainer) => {
+            cardContainers.push(virtualCardContainer);
+          });
+
+          const indexOfDraggedContainer = cardContainerModel.findContainerIndexById(
+            idOfDraggedContainer,
+          );
+          console.log(idOfDraggedContainer, indexOfDraggedContainerStart, indexOfDraggedContainer);
+
+          await DBcontroller.moveContainer(
+            idOfDraggedContainer,
+            indexOfDraggedContainerStart,
+            indexOfDraggedContainer,
+          );
+          console.log('전체');
+          return;
+        }
 
         virtualCardContainers.forEach((virtualCardContainer) => {
           cardContainers.push(virtualCardContainer);
         });
 
-        event.preventDefault();
-        event.stopPropagation();
+        const idOfContainerMoved = dragController.draggedData[0].split('-')[3];
+        const idOfCardMoved = dragController.draggedData[0].split('-')[4];
+        const indexsOfStart = dragController.draggedData[1];
+        const indexsToGo = dragController.draggedData[2];
+
+        await DBcontroller.moveCard(idOfContainerMoved, idOfCardMoved, indexsOfStart, indexsToGo);
       });
     });
 
@@ -458,8 +515,10 @@ export const dragController = {
         event.stopPropagation();
         event.preventDefault();
       });
-
-      cardToDragTopElem.addEventListener('drop', (event) => {
+      ////
+      cardToDragTopElem.addEventListener('drop', async (event) => {
+        event.preventDefault();
+        event.stopPropagation();
         const virtualCardContainers = cardContainerModel.createCardContainerObjectVirtual();
         cardContainers.splice(0, cardContainers.length);
 
@@ -467,8 +526,12 @@ export const dragController = {
           cardContainers.push(virtualCardContainer);
         });
 
-        event.preventDefault();
-        event.stopPropagation();
+        const idOfContainerMoved = dragController.draggedData[0].split('-')[3];
+        const idOfCardMoved = dragController.draggedData[0].split('-')[4];
+        const indexsOfStart = dragController.draggedData[1];
+        const indexsToGo = dragController.draggedData[2];
+
+        await DBcontroller.moveCard(idOfContainerMoved, idOfCardMoved, indexsOfStart, indexsToGo);
       });
     });
 
@@ -528,7 +591,11 @@ export const dragController = {
         event.preventDefault();
         event.stopPropagation();
       });
-      cardToDragBottomElem.addEventListener('drop', (event) => {
+
+      /////////
+      cardToDragBottomElem.addEventListener('drop', async (event) => {
+        event.preventDefault();
+        event.stopPropagation();
         const virtualCardContainers = cardContainerModel.createCardContainerObjectVirtual();
 
         cardContainers.splice(0, cardContainers.length);
@@ -536,6 +603,13 @@ export const dragController = {
         virtualCardContainers.forEach((virtualCardContainer) => {
           cardContainers.push(virtualCardContainer);
         });
+
+        const idOfContainerMoved = dragController.draggedData[0].split('-')[3];
+        const idOfCardMoved = dragController.draggedData[0].split('-')[4];
+        const indexsOfStart = dragController.draggedData[1];
+        const indexsToGo = dragController.draggedData[2];
+
+        await DBcontroller.moveCard(idOfContainerMoved, idOfCardMoved, indexsOfStart, indexsToGo);
       });
     });
   },

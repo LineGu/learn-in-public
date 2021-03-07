@@ -19,7 +19,6 @@ const initTrelloApp = async () => {
   currentUser.maxContainerId = newCurrentUser.maxContainerId;
   currentUser.maxCardId = newCurrentUser.maxCardId;
 
-  console.log(currentUser);
   cardContainersView.render(cardContainers);
   CardContainerController.init();
   CardContainerController.initEventHandler();

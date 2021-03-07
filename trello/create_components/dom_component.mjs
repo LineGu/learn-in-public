@@ -69,7 +69,7 @@ export const createCardElem = (card, container) => {
       </section>
 
       <section class="remove-box hidden" id="edit-mode-bottom-box-${container.id}-${card.id}">
-        <img class="remove-card remove-${container.id}-${card.id}" id="edit-mode-bottom-${container.id}-${card.id}" src="./assets/trash.png" alt="카드 제거 이미지">
+        <img class="remove-card remove-${container.id}-${card.id}" id="edit-mode-bottom-${container.id}-${card.id}" src="./assets/trash.png" alt="카드 제거 이미지" />
       </section>
 
       <section class="edit-modal-box-card hidden" id="edit-modal-${container.id}-${card.id}">

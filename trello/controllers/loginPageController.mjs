@@ -17,17 +17,25 @@ export const loginPageController = {
     this.findIdConfirmButtonElem = document.querySelector('.find-id-btn');
     this.inputNameToFindIdElem = document.querySelector('#find-id-name');
     this.inputPhoneToFindIdElem = document.querySelector('#find-id-phone-number');
+    this.elemOfShowingIdFound = document.querySelector('.show-finding-id');
+    this.inputNameToFindPwElem = document.querySelector('#find-pw-name');
+    this.inputPhoneToFindPwElem = document.querySelector('#find-pw-phone-number');
+    this.inputEmailToFindPwElem = document.querySelector('#find-pw-id');
+    this.buttonToFindPw = document.querySelector('.find-pw-btn');
+    this.newPwModalElem = document.querySelector('.new-pw-box');
+    this.newPwInputElem = document.querySelector('#new-pw');
+    this.newPwRepeatInputElem = document.querySelector('#new-pw-repeat');
 
     this.attachOpenSignUpModal();
     this.attachCloseModal();
     this.checkOverlappingId();
-    this.checkRepeatPw();
     this.attachPreventFormActionHandler();
     this.createNewAccount();
     this.checkValidFormOfPhone();
     this.attachOpenFindingIdModal();
     this.attachOpenFindingPwModal();
     this.attachFindIdHandler();
+    this.attachFindPwHandler();
   },
 
   attachOpenSignUpModal() {
@@ -40,11 +48,16 @@ export const loginPageController = {
     });
   },
   attachOpenFindingIdModal() {
-    const { findingIdModalElem, openFindingIdModalButtonElem } = this;
+    const {
+      findingIdModalElem,
+      openFindingIdModalButtonElem,
+      inputPwElem,
+      inputRepeatPwElem,
+    } = this;
 
+    loginPageController.checkRepeatPw(inputPwElem, inputRepeatPwElem);
     openFindingIdModalButtonElem.addEventListener('click', (event) => {
       event.stopPropagation();
-
       findingIdModalElem.classList.remove('hidden');
     });
   },
@@ -68,25 +81,26 @@ export const loginPageController = {
       });
     });
   },
-  checkRepeatPw() {
-    const { inputPwElem, inputRepeatPwElem } = this;
+  checkRepeatPw(inputPwElem, inputRepeatPwElem) {
+    const showingValidPwElem = inputRepeatPwElem.parentNode.querySelector('.repeat-pw');
+    const showingInvalidPwElem = inputRepeatPwElem.parentNode.querySelector('.invalid-repeat-pw');
 
     inputRepeatPwElem.addEventListener('input', (event) => {
       const checkPwTimer = setTimeout(() => {
         const isValidRepeat = inputPwElem.value === inputRepeatPwElem.value;
         if (!inputRepeatPwElem.value) {
-          document.querySelector('.repeat-pw').classList.add('hidden');
-          document.querySelector('.invalid-repeat-pw').classList.add('hidden');
+          showingValidPwElem.classList.add('hidden');
+          showingInvalidPwElem.classList.add('hidden');
           return;
         }
 
         if (!isValidRepeat) {
-          document.querySelector('.repeat-pw').classList.add('hidden');
-          document.querySelector('.invalid-repeat-pw').classList.remove('hidden');
+          showingValidPwElem.classList.add('hidden');
+          showingInvalidPwElem.classList.remove('hidden');
           return;
         }
-        document.querySelector('.invalid-repeat-pw').classList.add('hidden');
-        document.querySelector('.repeat-pw').classList.remove('hidden');
+        showingInvalidPwElem.classList.add('hidden');
+        showingValidPwElem.classList.remove('hidden');
       }, 500);
 
       inputRepeatPwElem.addEventListener('input', () => {
@@ -391,7 +405,7 @@ export const loginPageController = {
   },
 
   async findUserId() {
-    const { inputNameToFindIdElem, inputPhoneToFindIdElem } = this;
+    const { inputNameToFindIdElem, inputPhoneToFindIdElem, elemOfShowingIdFound } = this;
 
     const inputName = inputNameToFindIdElem.value;
     const inputPhone = inputPhoneToFindIdElem.value;
@@ -410,13 +424,113 @@ export const loginPageController = {
       .catch((err) => {
         console.log(err);
       });
-
     if (resultOfFindingId === 'NO ID') {
-      alert('입력하신 정보와 일치하는 아이디가 없습니다.');
-      window.location.href = 'login.html';
+      elemOfShowingIdFound.innerText = '일치하는 값이 없습니다.';
+      elemOfShowingIdFound.classList.remove('hidden');
+      elemOfShowingIdFound.classList.add('alert');
+      inputNameToFindIdElem.value = '';
+      inputPhoneToFindIdElem.value = '';
       return;
     }
-    alert(`회원님의 아이디는 ${resultOfFindingId} 입니다.`);
-    window.location.href = 'login.html';
+
+    elemOfShowingIdFound.querySelector('.findind-id').innerText = `${resultOfFindingId}`;
+    elemOfShowingIdFound.classList.remove('hidden');
+    inputNameToFindIdElem.value = '';
+    inputPhoneToFindIdElem.value = '';
+  },
+
+  attachFindPwHandler() {
+    const { buttonToFindPw } = this;
+
+    buttonToFindPw.addEventListener('click', async (event) => {
+      event.preventDefault();
+
+      window.userId = await loginPageController.findUserForChangindPw();
+      if (!userId) return;
+
+      loginPageController.openChangeUserPwModal();
+    });
+
+    buttonToFindPw.addEventListener('click', async (event) => {
+      if (buttonToFindPw.classList.contains('change-btn')) {
+        event.preventDefault();
+
+        const resultOfChanging = await loginPageController.changeUserPw(window.userId);
+        if (!resultOfChanging) {
+          alert('변경 실패!');
+          return;
+        }
+        alert('성공적으로 변경했습니다.');
+        window.location.href = 'login.html';
+      }
+    });
+  },
+
+  async findUserForChangindPw() {
+    const { inputNameToFindPwElem, inputPhoneToFindPwElem, inputEmailToFindPwElem } = this;
+
+    const inputName = inputNameToFindPwElem.value;
+    const inputPhone = inputPhoneToFindPwElem.value;
+    const inputEmail = inputEmailToFindPwElem.value;
+
+    const resultOfFindUser = await fetch('http://localhost:8080/findigPw', {
+      method: 'POST',
+      body: JSON.stringify({
+        name: inputName,
+        phoneNumber: inputPhone,
+        email: inputEmail,
+      }),
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+    });
+
+    const userIdJSON = await resultOfFindUser.json();
+    const userId = JSON.parse(userIdJSON).msg;
+
+    if (userId === 'INVALID') {
+      alert('일치하는 정보가 없습니다.');
+      return false;
+    }
+
+    return userId;
+  },
+
+  openChangeUserPwModal() {
+    const {
+      findingPwModalElem,
+      newPwModalElem,
+      newPwRepeatInputElem,
+      newPwInputElem,
+      buttonToFindPw,
+    } = this;
+    console.log(1);
+    findingPwModalElem.classList.add('bigger');
+    newPwModalElem.classList.remove('hidden');
+    buttonToFindPw.innerText = '바꾸기';
+    buttonToFindPw.classList.add('change-btn');
+    loginPageController.checkRepeatPw(newPwInputElem, newPwRepeatInputElem);
+  },
+
+  async changeUserPw(userId) {
+    const { newPwInputElem } = this;
+
+    const newPw = newPwInputElem.value;
+
+    const resultOfChangingPw = await fetch('http://localhost:8080/pw', {
+      method: 'PATCH',
+      body: JSON.stringify({
+        newPw,
+        userId,
+      }),
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+    });
+
+    const resultOfChangingPwJSON = await resultOfChangingPw.json();
+    const resultOfChagingPw = JSON.parse(resultOfChangingPwJSON).msg;
+    console.log(resultOfChagingPw);
+    if (resultOfChagingPw === 'SUCCESS') return true;
+
+    return false;
   },
 };

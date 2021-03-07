@@ -254,7 +254,7 @@ h1 {
 .card {
   position: relative;
   float: none;
-  z-index: 0;
+
   background-color: #ffffff;
   width: 320px;
   word-wrap: break-word;
@@ -270,7 +270,7 @@ h1 {
 .card > div {
   position: relative;
   float: none;
-  z-index: 0;
+
   margin: 0.3em 1em 1em 2.75em;
   line-height: 180%;
   font-size: 0.95em;
@@ -602,7 +602,6 @@ h1 {
   box-shadow: 1px 1px 2px #acc8eb;
   color: #ffffff;
   z-index: 10;
-  float: right;
 }
 
 .edit-modal-box-card > .top {

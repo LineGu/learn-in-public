@@ -226,6 +226,13 @@ body::before {
   justify-content: center;
   align-items: center;
 }
+.new-pw-box {
+  margin-top: 15px;
+}
+
+.bigger {
+  height: 600px;
+}
 
 .signup-container > h1,
 .find-id-container > h1,
@@ -244,7 +251,8 @@ body::before {
 
 .signup-container > .int-area input,
 .find-id-container > .int-area input,
-.find-pw-container > .int-area input {
+.find-pw-container > .int-area input,
+.new-pw-box > .int-area input {
   color: black;
   margin-top: 5px;
   padding-bottom: 3px;
@@ -252,7 +260,8 @@ body::before {
 
 .signup-container > .int-area > img,
 .find-id-container > .int-area > img,
-.find-pw-container > .int-area > img {
+.find-pw-container > .int-area > img,
+.new-pw-box > .int-area > img {
   width: 1.7em;
   height: 1.7em;
   position: absolute;
@@ -263,13 +272,16 @@ body::before {
 .find-id-container > .int-area input:focus,
 .find-id-container > .int-area input:valid,
 .find-pw-container > .int-area input:focus,
-.find-pw-container > .int-area input:valid {
+.find-pw-container > .int-area input:valid,
+.new-pw-box > .int-area input:focus,
+.new-pw-box > .int-area input:valid {
   border-bottom: 2px solid #166cea;
 }
 
 .signup-container > .int-area > p,
 .find-id-container > .int-area > p,
-.find-pw-container > .int-area > p {
+.find-pw-container > .int-area > p,
+.new-pw-box > .int-area > p {
   position: absolute;
   color: red;
   font-size: 0.4em;
@@ -283,7 +295,8 @@ body::before {
 .find-id-container > .int-area > .valid-phone,
 .find-pw-container > .int-area > .available-id,
 .find-pw-container > .int-area > .repeat-pw,
-.find-pw-container > .int-area > .valid-phone {
+.find-pw-container > .int-area > .valid-phone,
+.new-pw-box > .int-area > .repeat-pw {
   color: #4caf50;
 }
 
@@ -324,9 +337,25 @@ body::before {
   opacity: 1;
 }
 
+.show-finding-id {
+  display: flex;
+  margin: 20px 0 0 0;
+  color: #566475;
+}
+
+.show-finding-id > p {
+  margin: 0 5px 0 5px;
+  text-decoration: underline;
+  color: #000000;
+}
+
 .hidden {
   display: none;
   pointer-events: none;
+}
+
+.alert {
+  color: #ee5454;
 }
 @keyframes left {
   from {
