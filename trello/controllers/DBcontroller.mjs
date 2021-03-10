@@ -17,13 +17,14 @@ export const DBcontroller = {
       console.log('서버에러');
     }
   },
-  async addContainer(idOfAddContainer, name, containerIndex) {
+  async addContainer(idOfAddContainer, name, containerIndex, userId = 0) {
     try {
       const result = await fetch(`http://localhost:8080/user/container/${idOfAddContainer}`, {
         method: 'POST',
         body: JSON.stringify({
           name,
           containerIndex,
+          userId,
         }),
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
@@ -90,56 +91,10 @@ export const DBcontroller = {
     }
   },
 
-  async updateMaxContainerId(idOfAddContainer) {
-    try {
-      const result = await fetch(`http://localhost:8080/user/maxContainerId`, {
-        method: 'PATCH',
-        body: JSON.stringify({
-          containerId: idOfAddContainer,
-        }),
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-      });
-
-      if (result.status !== 200) {
-        throw new Error(response.status);
-      }
-    } catch (err) {
-      if (err === 400) {
-        console.log('클라이언트 에러');
-        return;
-      }
-      console.log('서버에러');
-    }
-  },
-
-  async updateMaxCardId(idOfAddCard) {
-    try {
-      const result = await fetch(`http://localhost:8080/user/maxCardId`, {
-        method: 'PATCH',
-        body: JSON.stringify({
-          cardId: idOfAddCard,
-        }),
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-      });
-
-      if (result.status !== 200) {
-        throw new Error(response.status);
-      }
-    } catch (err) {
-      if (err === 400) {
-        console.log('클라이언트 에러');
-        return;
-      }
-      console.log('서버에러');
-    }
-  },
-
   async deleteCard(idOfContainer, idOfCardToDelete) {
     try {
       const result = await fetch(
-        `http://localhost:8080/user/container/${idOfContainer}/card/${idOfCardToDelete}`,
+        `http://localhost:8080/user/card/${idOfContainer}/${idOfCardToDelete}`,
         {
           method: 'DELETE',
           credentials: 'include',
@@ -158,18 +113,18 @@ export const DBcontroller = {
     }
   },
 
-  async addCard(idOfContainer, idOfCardToAdd, containerIdOfDB, header, body, footer, cardIndex) {
+  async addCard(idOfContainer, idOfCardToAdd, header, body, footer, cardIndex, userId = 0) {
     try {
       const result = await fetch(
-        `http://localhost:8080/user/container/${idOfContainer}/card/${idOfCardToAdd}`,
+        `http://localhost:8080/user/card/${idOfContainer}/${idOfCardToAdd}`,
         {
           method: 'POST',
           body: JSON.stringify({
-            containerIdOfDB,
             header,
             body,
             footer,
             cardIndex,
+            userId,
           }),
           headers: { 'Content-Type': 'application/json' },
           credentials: 'include',
@@ -191,7 +146,7 @@ export const DBcontroller = {
   async updateCard(idOfContainerUpdated, idOfCardUpdated, header, body) {
     try {
       const result = await fetch(
-        `http://localhost:8080/user/container/${idOfContainerUpdated}/card/${idOfCardUpdated}`,
+        `http://localhost:8080/user/card/${idOfContainerUpdated}/${idOfCardUpdated}`,
         {
           method: 'PATCH',
           body: JSON.stringify({
@@ -218,7 +173,7 @@ export const DBcontroller = {
   async moveCard(idOfContainerMoved, idOfCardMoved, indexsOfStart, indexsToGo) {
     try {
       const result = await fetch(
-        `http://localhost:8080/user/container/${idOfContainerMoved}/card/index/${idOfCardMoved}`,
+        `http://localhost:8080/user/card/index/${idOfContainerMoved}/${idOfCardMoved}`,
         {
           method: 'PATCH',
           body: JSON.stringify({
@@ -229,53 +184,6 @@ export const DBcontroller = {
           credentials: 'include',
         },
       );
-
-      if (result.status !== 200) {
-        throw new Error(response.status);
-      }
-    } catch (err) {
-      if (err === 400) {
-        console.log('클라이언트 에러');
-        return;
-      }
-      console.log('서버에러');
-    }
-  },
-
-  async findContainerIdOfDB(idOfContainer) {
-    try {
-      const result = await fetch(`http://localhost:8080/user/containerIdOfDB/${idOfContainer}`, {
-        method: 'GET',
-        credentials: 'include',
-      });
-
-      if (result.status !== 200) {
-        throw new Error(response.status);
-      }
-
-      const ContainerIdOfDBForJSON = await result.json();
-      const ContainerIdOfDB = await JSON.parse(ContainerIdOfDBForJSON).msg;
-
-      return ContainerIdOfDB;
-    } catch (err) {
-      if (err === 400) {
-        console.log('클라이언트 에러');
-        return;
-      }
-      console.log('서버에러');
-    }
-  },
-
-  async updateCount(idOfContainer, newCount) {
-    try {
-      const result = await fetch(`http://localhost:8080/user/container/${idOfContainer}/count`, {
-        method: 'PATCH',
-        body: JSON.stringify({
-          newCount,
-        }),
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-      });
 
       if (result.status !== 200) {
         throw new Error(response.status);

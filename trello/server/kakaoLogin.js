@@ -1,4 +1,4 @@
-import { loginPageController } from './controllers/loginPageController.mjs';
+import { loginPageController } from '../controllers/loginPageController.mjs';
 
 const kakaoLoginButtonElem = document.querySelector('#kakao');
 
@@ -30,7 +30,7 @@ const kakaoLoginController = {
 
     if (resultOfGetUserLoginData.msg === 'NOT USER') {
       const resultOfGetUserSignData = await kakaoLoginController.signInForKakao(userData);
-      if (resultOfGetUserSignData.msg === 'SIGNUP SUCCESS') {
+      if (resultOfGetUserSignData.msg === 'SUCCESS') {
         alert('첫 방문을 환영합니다.');
         kakaoLoginController.loginForUser(userData);
       }
@@ -41,7 +41,13 @@ const kakaoLoginController = {
     Kakao.API.request({
       url: '/v2/user/me',
       success: (res) => {
-        const userData = { id: res.id, name: res.properties.nickname, loginMethod: 'kakao' };
+        const userData = {
+          id: res.id,
+          loginMethod: 'kakao',
+          pw: '',
+          phoneNumber: '',
+          name: res.properties.nickname,
+        };
         kakaoLoginController.loginForUser(userData);
       },
       fail: function (error) {
@@ -51,7 +57,7 @@ const kakaoLoginController = {
   },
 
   async postUserData(userData) {
-    const result = await fetch('http://localhost:8080/socialLogin', {
+    const result = await fetch('http://localhost:8080/auth/socialLogin', {
       method: 'POST',
       body: JSON.stringify(userData),
       headers: { 'Content-Type': 'application/json' },
@@ -65,7 +71,7 @@ const kakaoLoginController = {
   },
 
   async signInForKakao(userData) {
-    const result = await fetch('http://localhost:8080/socialSignIn', {
+    const result = await fetch('http://localhost:8080/signUp', {
       method: 'POST',
       body: JSON.stringify(userData),
       headers: { 'Content-Type': 'application/json' },
@@ -92,9 +98,7 @@ const kakaoLoginController = {
       return;
     }
 
-    const containerId = await loginPageController.findDefaultContainer(userIdOfDb);
-
-    const resultOfCreatCard = await loginPageController.createDefaultCard(userIdOfDb, containerId);
+    const resultOfCreatCard = await loginPageController.createDefaultCard(userIdOfDb);
 
     if (resultOfCreatCard === 'FAIL') {
       console.log('fail to create card');

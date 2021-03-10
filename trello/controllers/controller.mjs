@@ -113,7 +113,7 @@ export const CardContainerController = {
   attachLogOutHandler() {
     const { logOutButtonElem } = CardContainerController;
     logOutButtonElem.addEventListener('click', (event) => {
-      loginController.logOut();
+      loginController.logout();
     });
   },
 

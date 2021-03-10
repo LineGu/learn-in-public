@@ -77,7 +77,7 @@ export const authController = {
   },
 
   async postIdAndPassword(inputId, inputPassword) {
-    const result = await fetch('http://localhost:8080/login', {
+    const result = await fetch('http://localhost:8080/auth/login', {
       method: 'POST',
       body: JSON.stringify({
         id: inputId,

@@ -1,3 +1,5 @@
+import { DBcontroller } from './DBcontroller.mjs';
+
 export const loginPageController = {
   init() {
     this.openSignUpModalButtonElem = document.querySelector('.sign-up-button');
@@ -147,9 +149,11 @@ export const loginPageController = {
   },
 
   checkValidForm() {
-    const isValidRepeat = !document.querySelector('.repeat-pw').classList.contains('hidden');
+    const isValidRepeat = !document.querySelector('.repeat-signup-pw').classList.contains('hidden');
     const isValidId = !document.querySelector('.available-id').classList.contains('hidden');
-    const isValidPhone = !document.querySelector('.valid-phone').classList.contains('hidden');
+    const isValidPhone = !document
+      .querySelector('.valid-signup-phone')
+      .classList.contains('hidden');
 
     if (isValidRepeat && isValidId && isValidPhone) {
       return true;
@@ -187,6 +191,7 @@ export const loginPageController = {
           id: inputIdElem.value,
           pw: inputPwElem.value,
           phoneNumber: inputPhoneNumberElem.value,
+          loginMethod: 'local',
         }),
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
@@ -221,10 +226,7 @@ export const loginPageController = {
         return;
       }
 
-      const containerId = await loginPageController.findDefaultContainer(userId);
-      console.log(containerId);
-
-      const resultOfCreatCard = await loginPageController.createDefaultCard(userId, containerId);
+      const resultOfCreatCard = await loginPageController.createDefaultCard(userId);
 
       if (resultOfCreatCard === 'FAIL') {
         console.log('fail to create card');
@@ -237,73 +239,40 @@ export const loginPageController = {
     });
   },
 
-  async findDefaultContainer(userId) {
-    const result = await fetch('http://localhost:8080/defaultContainerId', {
-      method: 'POST',
-      body: JSON.stringify({
+  async createDefaultCard(userId) {
+    try {
+      await DBcontroller.addCard(
+        0,
+        0,
+        '해야할 일을 입력해보세요!',
+        '구체적인 내용을 입력하세요! 그 후에 이 카드를 드래그해서 진행 중으로 옮겨보세요~',
+        '사용자님의 닉네임이 들어갑니다!',
+        0,
         userId,
-      }),
-      headers: { 'Content-Type': 'application/json' },
-      credentials: 'include',
-    })
-      .then((res) => res.json())
-      .then((res) => JSON.parse(res).msg)
-      .catch((err) => {
-        alert('회원가입에 실패했습니다.');
-        return;
-      });
-
-    return result;
-  },
-
-  async createDefaultCard(userId, containerId) {
-    const result = await fetch('http://localhost:8080/defaultCard', {
-      method: 'POST',
-      body: JSON.stringify({
-        userId,
-        containerId,
-      }),
-      headers: { 'Content-Type': 'application/json' },
-      credentials: 'include',
-    })
-      .then((res) => res.json())
-      .then((res) => JSON.parse(res).msg)
-      .catch((err) => {
-        alert('회원가입에 실패했습니다.');
-        return;
-      });
-
-    if (result === 'SUCCESS') {
-      return result;
+      );
+      return 'SUCCESS';
+    } catch (err) {
+      alert('회원가입에 실패했습니다.');
+      return 'FAIL';
+      //회원 아이디 지우기
     }
-    return 'FAIL';
   },
 
   async createDefaultContainer(userId) {
-    const result = await fetch('http://localhost:8080/defaultContianer', {
-      method: 'POST',
-      body: JSON.stringify({
-        userId,
-      }),
-      headers: { 'Content-Type': 'application/json' },
-      credentials: 'include',
-    })
-      .then((res) => res.json())
-      .then((res) => JSON.parse(res).msg)
-      .catch((err) => {
-        alert('회원가입에 실패했습니다.');
-        return;
-      });
-
-    if (result === 'SUCCESS') {
-      return result;
+    try {
+      await DBcontroller.addContainer(0, '할 일', 0, userId);
+      await DBcontroller.addContainer(1, '진행 중', 1, userId);
+      await DBcontroller.addContainer(2, '완료', 2, userId);
+      return 'SUCCESS';
+    } catch (err) {
+      alert('회원가입에 실패했습니다.');
+      return 'FAIL';
+      //회원 아이디 지우기
     }
-
-    return 'FAIL';
   },
 
   async getUserIdOfDataBaseTable(name, id) {
-    const userId = await fetch('http://localhost:8080/userId', {
+    const userId = await fetch('http://localhost:8080/user/id', {
       method: 'POST',
       body: JSON.stringify({
         name,
@@ -355,7 +324,7 @@ export const loginPageController = {
           return;
         }
 
-        const resultOfOverlapping = await fetch('http://localhost:8080/OverlappingId', {
+        const resultOfOverlapping = await fetch('http://localhost:8080/signUp/OverlappingId', {
           method: 'POST',
           body: JSON.stringify({
             id: inputId,
@@ -410,7 +379,7 @@ export const loginPageController = {
     const inputName = inputNameToFindIdElem.value;
     const inputPhone = inputPhoneToFindIdElem.value;
 
-    const resultOfFindingId = await fetch('http://localhost:8080/findingId', {
+    const resultOfFindingId = await fetch('http://localhost:8080/user/email', {
       method: 'POST',
       body: JSON.stringify({
         name: inputName,
@@ -467,18 +436,16 @@ export const loginPageController = {
   },
 
   async findUserForChangindPw() {
-    const { inputNameToFindPwElem, inputPhoneToFindPwElem, inputEmailToFindPwElem } = this;
+    const { inputNameToFindPwElem, inputEmailToFindPwElem } = this;
 
     const inputName = inputNameToFindPwElem.value;
-    const inputPhone = inputPhoneToFindPwElem.value;
     const inputEmail = inputEmailToFindPwElem.value;
 
-    const resultOfFindUser = await fetch('http://localhost:8080/findigPw', {
+    const resultOfFindUser = await fetch('http://localhost:8080/user/id', {
       method: 'POST',
       body: JSON.stringify({
         name: inputName,
-        phoneNumber: inputPhone,
-        email: inputEmail,
+        id: inputEmail,
       }),
       headers: { 'Content-Type': 'application/json' },
       credentials: 'include',
@@ -516,7 +483,7 @@ export const loginPageController = {
 
     const newPw = newPwInputElem.value;
 
-    const resultOfChangingPw = await fetch('http://localhost:8080/pw', {
+    const resultOfChangingPw = await fetch('http://localhost:8080/user/password', {
       method: 'PATCH',
       body: JSON.stringify({
         newPw,
@@ -528,7 +495,7 @@ export const loginPageController = {
 
     const resultOfChangingPwJSON = await resultOfChangingPw.json();
     const resultOfChagingPw = JSON.parse(resultOfChangingPwJSON).msg;
-    console.log(resultOfChagingPw);
+
     if (resultOfChagingPw === 'SUCCESS') return true;
 
     return false;

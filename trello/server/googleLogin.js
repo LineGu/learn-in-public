@@ -1,31 +1,35 @@
-import { loginPageController } from './controllers/loginPageController.mjs';
+import { loginPageController } from '../controllers/loginPageController.mjs';
 
 const btn = document.querySelector('#google');
 btn.addEventListener('click', (event) => {
-  init();
+  googleLoginControll.init();
   event.stopPropagation();
   event.preventDefault();
 });
 
-function init() {
-  gapi.load('auth2', function () {
-    const googleAuth = gapi.auth2.init({
-      client_id: '754093745043-1h4l8j77bhelph1u0c2vlsd6tnk8vggk.apps.googleusercontent.com',
-      fetch_basic_profile: true,
-      scope: 'profile',
-    });
-
-    googleAuth.then(
-      (googleAuth) => googleLoginControll.logInWithGoogle(googleAuth),
-      () => console.log('err'),
-    );
-  });
-}
-
 const googleLoginControll = {
+  init() {
+    gapi.load('auth2', function () {
+      const googleAuth = gapi.auth2.init({
+        client_id: '754093745043-1h4l8j77bhelph1u0c2vlsd6tnk8vggk.apps.googleusercontent.com',
+        fetch_basic_profile: true,
+        scope: 'profile',
+      });
+
+      googleAuth.then(
+        (googleAuth) => googleLoginControll.logInWithGoogle(googleAuth),
+        () => console.log('err'),
+      );
+    });
+  },
+
+  logoutWithGoogle(googleAuth) {
+    googleAuth.signOut();
+  },
+
   async logInWithGoogle(googleAuth) {
     if (googleAuth.isSignedIn.get()) {
-      googleAuth.signOut();
+      googleLoginControll.logoutWithGoogle(googleAuth);
     }
     await googleAuth.signIn();
     const resultOfGetUserLoginData = await googleLoginControll.postUserData(googleAuth);
@@ -36,7 +40,7 @@ const googleLoginControll = {
 
     if (resultOfGetUserLoginData.msg === 'NOT USER') {
       const resultOfGetUserSignData = await googleLoginControll.signInForGoogle(googleAuth);
-      if (resultOfGetUserSignData.msg === 'SIGNUP SUCCESS') {
+      if (resultOfGetUserSignData.msg === 'SUCCESS') {
         alert('첫 방문을 환영합니다.');
         googleLoginControll.logInWithGoogle(googleAuth);
       }
@@ -49,11 +53,11 @@ const googleLoginControll = {
     const userName = userProfile.getName();
     const userId = userProfile.getEmail();
 
-    const result = await fetch('http://localhost:8080/socialLogin', {
+    const result = await fetch('http://localhost:8080/auth/socialLogin', {
       method: 'POST',
       body: JSON.stringify({
         id: userId,
-        name: userName,
+        loginMethod: 'google',
       }),
       headers: { 'Content-Type': 'application/json' },
       credentials: 'include',
@@ -71,11 +75,14 @@ const googleLoginControll = {
     const userName = userProfile.getName();
     const userId = userProfile.getEmail();
 
-    const result = await fetch('http://localhost:8080/socialSignIn', {
+    const result = await fetch('http://localhost:8080/signUp', {
       method: 'POST',
       body: JSON.stringify({
         id: userId,
         name: userName,
+        pw: '',
+        phoneNumber: '',
+        loginMethod: 'google',
       }),
       headers: { 'Content-Type': 'application/json' },
       credentials: 'include',
@@ -98,9 +105,7 @@ const googleLoginControll = {
       return;
     }
 
-    const containerId = await loginPageController.findDefaultContainer(userIdOfDb);
-
-    const resultOfCreatCard = await loginPageController.createDefaultCard(userIdOfDb, containerId);
+    const resultOfCreatCard = await loginPageController.createDefaultCard(userIdOfDb);
 
     if (resultOfCreatCard === 'FAIL') {
       console.log('fail to create card');

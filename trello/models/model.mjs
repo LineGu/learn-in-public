@@ -140,18 +140,14 @@ export const cardModel = {
     cardContainers[indexOfContainer].count += 1;
     cardContainers[indexOfContainer].cards.unshift(newCard);
 
-    const containerIdOfDB = await DBcontroller.findContainerIdOfDB(idOfContainer);
     await DBcontroller.addCard(
       idOfContainer,
       currentUser.maxCardId,
-      containerIdOfDB,
       header,
       body,
       currentUser.name,
       0,
     );
-    await DBcontroller.updateCount(idOfContainer, cardContainers[indexOfContainer].count);
-    await DBcontroller.updateMaxCardId(currentUser.maxCardId);
 
     Observation.notify(cardContainers);
   },
@@ -167,10 +163,6 @@ export const cardModel = {
     cardContainers[indexOfDeleteContainer].cards.splice(indexOfDeleteCard, 1);
     cardContainers[indexOfDeleteContainer].count -= 1;
     await DBcontroller.deleteCard(idOfDeleteContainer, idOfDeleteCard);
-    await DBcontroller.updateCount(
-      idOfDeleteContainer,
-      cardContainers[indexOfDeleteContainer].count,
-    );
   },
 
   async editCard(idOfEditContainer, idOfEditCard, title, body) {

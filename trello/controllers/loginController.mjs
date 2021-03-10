@@ -14,7 +14,7 @@ export const loginController = {
         window.location.href = 'index.html';
       });
 
-    if (userData.msg === 'NO COOKIE') {
+    if (userData.msg === 'INVALID USER') {
       return false;
     }
 
@@ -43,13 +43,10 @@ export const loginController = {
 
   async getCardData(containerId, cardId) {
     try {
-      const response = await fetch(
-        `http://localhost:8080/user/container/${containerId}/card/${cardId}`,
-        {
-          method: 'GET',
-          credentials: 'include',
-        },
-      );
+      const response = await fetch(`http://localhost:8080/user/card/${containerId}/${cardId}`, {
+        method: 'GET',
+        credentials: 'include',
+      });
 
       if (response.status === 200) {
         const cardJSON = await response.json();
@@ -64,8 +61,8 @@ export const loginController = {
     }
   },
 
-  async logOut() {
-    const result = await fetch('http://localhost:8080/logout', {
+  async logout() {
+    const result = await fetch('http://localhost:8080/auth/logout', {
       method: 'GET',
       credentials: 'include',
     })
